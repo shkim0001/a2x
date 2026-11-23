@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "A2X 플랫폼 전체 아키텍처",
+    "locale": "ko",
+    "output": ".archify/architecture-a2x-platform-20261122-123758/a2x-platform.html",
+    "quality_profile": "showcase"
+  },
+  "components": [
+    { "id": "auth", "type": "security", "label": "인증", "sublabel": "Google OIDC · 자체 가입", "pos": [230, 40], "size": [150, 56] },
+    { "id": "claude", "type": "cloud", "label": "Claude API", "sublabel": "복수 모델 전환", "pos": [780, 40], "size": [130, 56] },
+
+    { "id": "users", "type": "external", "label": "사용자", "sublabel": "개발자 · 퍼블리셔 · admin", "pos": [40, 170], "size": [120, 64] },
+    { "id": "portal", "type": "frontend", "label": "웹 포탈", "sublabel": "등록 · 구독 · 모니터링", "pos": [230, 170], "size": [150, 64] },
+    { "id": "supervisor", "type": "backend", "label": "Supervisor", "sublabel": "규칙 기반 라우팅", "pos": [510, 170], "size": [140, 64], "tag": "LangGraph" },
+    { "id": "agents", "type": "backend", "label": "업무 Agent", "sublabel": "컨설팅 · 신청대행 · 개발 · 오류", "pos": [750, 170], "size": [190, 64] },
+    { "id": "master", "type": "external", "label": "외부 마스터", "sublabel": "MCP Tool · 1차 모의", "pos": [1050, 170], "size": [140, 64] },
+
+    { "id": "governance", "type": "backend", "label": "거버넌스", "sublabel": "등록 · 구독 · 정책", "pos": [230, 310], "size": [150, 60] },
+    { "id": "portaldb", "type": "database", "label": "포탈 DB", "sublabel": "SQLite → PostgreSQL", "pos": [460, 310], "size": [130, 60] },
+    { "id": "chroma", "type": "database", "label": "ChromaDB", "sublabel": "컨설팅 RAG", "pos": [780, 310], "size": [130, 60] },
+
+    { "id": "consumer", "type": "external", "label": "AI Agent", "sublabel": "API·MCP·A2A 호출", "pos": [40, 530], "size": [120, 60] },
+    { "id": "gateway", "type": "cloud", "label": "Gateway", "sublabel": "WSO2 추상화 · API→MCP", "pos": [230, 530], "size": [150, 60], "tag": "3차" },
+    { "id": "authz", "type": "security", "label": "권한관리", "sublabel": "Tool · 파라미터 · 데이터", "pos": [470, 530], "size": [150, 60], "tag": "2차" },
+    { "id": "guard", "type": "security", "label": "가드레일", "sublabel": "정적 · 동적 검사", "pos": [720, 530], "size": [150, 60], "tag": "2차" },
+    { "id": "targets", "type": "external", "label": "사내 시스템", "sublabel": "API · MCP 서버 · A2A", "pos": [1000, 530], "size": [170, 60] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "Control plane · SaaS 제공", "wraps": ["portal", "supervisor", "agents", "governance", "portaldb", "chroma"] },
+    { "kind": "region", "label": "Data plane · 고객 환경 설치", "wraps": ["gateway", "authz", "guard"] }
+  ],
+  "connections": [
+    { "id": "use-portal", "from": "users", "to": "portal", "label": "이용", "variant": "emphasis" },
+    { "id": "login", "from": "portal", "to": "auth", "label": "로그인", "variant": "security" },
+    { "id": "ask-agent", "from": "portal", "to": "supervisor", "label": "Agent 요청", "variant": "emphasis" },
+    { "id": "autofill", "from": "supervisor", "to": "portal", "label": "입력란 자동 채움" },
+    { "id": "route", "from": "supervisor", "to": "agents", "label": "규칙 라우팅" },
+    { "id": "read-master", "from": "agents", "to": "master", "label": "MCP 조회" },
+    { "id": "llm", "from": "agents", "to": "claude", "label": "추론" },
+    { "id": "rag", "from": "agents", "to": "chroma", "label": "RAG 검색" },
+    { "id": "portal-gov", "from": "portal", "to": "governance", "label": "신청 제출" },
+    { "id": "persist", "from": "governance", "to": "portaldb", "label": "저장" },
+    { "id": "deploy-policy", "from": "governance", "to": "gateway", "label": "정책·구독 배포" },
+    { "id": "call", "from": "consumer", "to": "gateway", "label": "호출", "variant": "emphasis" },
+    { "id": "check-authz", "from": "gateway", "to": "authz", "label": "권한 판정", "variant": "security" },
+    { "id": "check-guard", "from": "authz", "to": "guard", "label": "허용 시", "variant": "security" },
+    { "id": "proxy", "from": "guard", "to": "targets", "label": "대상 호출", "variant": "emphasis" }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "1차 범위", "items": ["웹 포탈과 A2X Agent 먼저 개발", "외부 마스터는 모의 MCP 서버", "모니터링은 샘플 데이터"] },
+    { "dot": "violet", "title": "A2X Agent", "items": ["Supervisor는 Python 규칙으로 라우팅", "외부 마스터를 읽어 신청서 자동 채움", "제출은 항상 사용자가 확인 후 진행"] },
+    { "dot": "rose", "title": "권한 · 가드레일", "items": ["Tool · 파라미터 · 데이터 레벨 권한", "판정은 규칙 코드 우선, LLM은 보조", "2차에 개발해 Gateway 경로에 적용"] },
+    { "dot": "amber", "title": "사업 구조", "items": ["Control plane은 SaaS로 제공", "Gateway는 고객 환경에 설치", "WSO2 외 Gateway로 교체 가능"] }
+  ]
+}

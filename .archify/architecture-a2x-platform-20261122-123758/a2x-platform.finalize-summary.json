@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "command": "finalize",
+  "status": "pass",
+  "type": "architecture",
+  "quality": "showcase",
+  "specification": {
+    "path": "c:\\python\\a2x_agent\\.archify\\architecture-a2x-platform-20261122-123758\\candidate.json",
+    "sha256": "4b4b131b5b3d758a237aa283642dbfad3821731d8e9d6ef7dd5713ee13527d65",
+    "bytes": 5114
+  },
+  "artifact": {
+    "path": "c:\\python\\a2x_agent\\.archify\\architecture-a2x-platform-20261122-123758\\a2x-platform.html",
+    "sha256": "c9c5cec82a0895a25d00e9e0623baed0f488ba2c4d61c825a3b170ae223fd55f",
+    "bytes": 866534
+  },
+  "gates": {
+    "validate": "pass",
+    "deliver": "pass",
+    "check": "pass",
+    "browser-check": "pass"
+  },
+  "diagnostics": [],
+  "diagnosticSummary": {
+    "total": 0,
+    "shown": 0,
+    "truncated": false
+  },
+  "evidence": {
+    "receipt": "C:\\python\\a2x_agent\\.archify\\architecture-a2x-platform-20261122-123758\\a2x-platform.finalize.json",
+    "summaryReceipt": "C:\\python\\a2x_agent\\.archify\\architecture-a2x-platform-20261122-123758\\a2x-platform.finalize-summary.json",
+    "browserCheckReceipt": "c:\\python\\a2x_agent\\.archify\\architecture-a2x-platform-20261122-123758\\a2x-platform.browser-check.json"
+  },
+  "visualReview": "not-requested",
+  "durationMs": 49108,
+  "browserCheck": {
+    "requested": true,
+    "ran": true
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "a30c488b-bb17-47f1-902b-a7686b0b23bb",
+  "status": "current",
+  "command": "deliver",
+  "type": "architecture",
+  "input": "c:\\python\\a2x_agent\\.archify\\architecture-a2x-platform-20261122-123758\\candidate.json",
+  "output": "C:\\python\\a2x_agent\\.archify\\architecture-a2x-platform-20261122-123758\\a2x-platform.html",
+  "specification": {
+    "sha256": "4b4b131b5b3d758a237aa283642dbfad3821731d8e9d6ef7dd5713ee13527d65",
+    "bytes": 5114
+  },
+  "artifact": {
+    "sha256": "c9c5cec82a0895a25d00e9e0623baed0f488ba2c4d61c825a3b170ae223fd55f",
+    "bytes": 866534
+  }
+}
