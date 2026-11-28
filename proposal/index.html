@@ -40,13 +40,13 @@
   .deck img { width: 36px; height: 36px; }
   .deck b { font-family: var(--display); font-size: 21px; font-weight: 400; display: block; line-height: 1.1; }
   .deck small { font-size: 11.5px; color: var(--muted); }
-  .tabs { display: flex; gap: 5px; flex: 1; }
-  .tab { height: 54px; min-width: 0; padding: 8px 9px 0; border-radius: 14px; background: #fff; border: 1px solid var(--line); text-align: left; transition: background .25s, color .25s, transform .25s; }
+  .tabs { display: flex; gap: 4px; flex: 1; min-width: 0; }
+  .tab { flex: 1 1 0; height: 54px; min-width: 0; overflow: hidden; padding: 8px 6px 0; border-radius: 14px; background: #fff; border: 1px solid var(--line); text-align: left; transition: background .25s, color .25s, transform .25s; }
   .tab:hover { transform: translateY(-2px); }
-  .tab span { display: block; font-family: var(--display); font-size: 15px; line-height: 1.1; }
+  .tab span { display: block; font-family: var(--display); font-size: 14px; line-height: 1.1; white-space: nowrap; }
   .tab span::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--ac); margin-right: 6px; vertical-align: 2px; }
   .tab.on span::before { background: #fff; }
-  .tab small { display: block; font-size: 10.5px; color: var(--muted); margin-top: 3px; white-space: nowrap; }
+  .tab small { display: block; font-size: 10px; color: var(--muted); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; letter-spacing: -.02em; }
   .tab.on { background: var(--blue); border-color: var(--blue); color: #fff; }
   .tab.on small { color: rgb(255 255 255 / .85); }
   .nav { display: flex; align-items: center; gap: 10px; }
@@ -122,6 +122,7 @@
   /* ===== Scenes ===== */
   .scene { margin-top: 26px; width: 100%; }
   .agentchip { transition: opacity .45s, transform .45s; transform-box: fill-box; transform-origin: center; }
+  .skchip { cursor: pointer; } .skchip rect { transition: fill .2s, stroke .4s; } .skchip:hover rect { fill: #f5f6f8; }
   .agentchip.out { opacity: 0; transform: scale(.4); }
   .led { transition: fill .2s; }
   .mwglow { animation: glow 2.4s ease-in-out infinite; }
@@ -232,8 +233,14 @@
   .cmpnote { margin-top: 14px; font-size: 13px; color: var(--muted); }
 
   /* ===== misc ===== */
-  .planes { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-top: 30px; }
-  .plane { border-radius: 24px; padding: 34px 36px; color: #f5f5f7; height: 420px; position: relative; overflow: hidden; }
+  .planes { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-top: 24px; }
+  .slotmap { display: grid; grid-template-columns: 120px repeat(3, 1fr); gap: 14px; margin-top: 18px; align-items: stretch; }
+  .slotmap .smt { align-self: center; font-family: var(--display); font-size: 19px; line-height: 1.3; color: #3a3a3c; }
+  .slotmap .sm { padding: 14px 18px; border-radius: 18px; background: color-mix(in srgb, var(--c) 6%, #fff); border: 1px solid color-mix(in srgb, var(--c) 22%, #fff); }
+  .slotmap .sm em { font-style: normal; font-family: var(--sans); font-weight: 800; font-size: 12px; color: #fff; background: var(--c); padding: 2px 10px; border-radius: 980px; }
+  .slotmap .sm b { display: block; font-family: var(--display); font-weight: 400; font-size: 19px; margin-top: 6px; }
+  .slotmap .sm span { display: block; font-size: 13.5px; color: #6e6e73; margin-top: 2px; }
+  .plane { border-radius: 24px; padding: 30px 36px; color: #f5f5f7; height: 330px; position: relative; overflow: hidden; }
   .plane.cp { background: linear-gradient(160deg, #1d4ed8, #0b2a6b); }
   .plane.dp { background: linear-gradient(160deg, #6d28d9, #2e1065); }
   .plane .k { font-family: var(--sans); font-weight: 800; font-size: 13px; letter-spacing: .06em; opacity: .75; margin-bottom: 12px; }
@@ -241,6 +248,8 @@
   .plane p { font-size: 18px; line-height: 1.6; opacity: .9; margin-bottom: 22px; }
   .plane ul { list-style: none; display: flex; gap: 8px; flex-wrap: wrap; }
   .plane li { padding: 7px 14px; border-radius: 980px; background: rgb(255 255 255 / .14); font-size: 15px; }
+  .plane li.hl { background: #fff; color: #5b2bd6; }
+  .plane p b.hl { font-weight: inherit; color: #fff; background: rgb(255 255 255 / .16); padding: 1px 6px; border-radius: 6px; }
   .plane .ring { position: absolute; right: -60px; bottom: -60px; width: 240px; height: 240px; border-radius: 50%; border: 2px solid rgb(255 255 255 / .18); animation: spin 14s linear infinite; }
   .plane .ring::after { content: ""; position: absolute; left: 50%; top: -7px; width: 12px; height: 12px; border-radius: 50%; background: #fff; box-shadow: 0 0 14px #fff; }
   @keyframes spin { to { transform: rotate(360deg); } }
@@ -507,6 +516,392 @@
   .rack i::after { content: ""; position: absolute; right: 5px; top: 3px; width: 4px; height: 4px; border-radius: 50%; background: var(--lc, #38bdf8); box-shadow: 0 0 5px var(--lc, #38bdf8); animation: led 1.6s infinite; }
   .rack i:nth-child(2)::after { animation-delay: -.5s; } .rack i:nth-child(3)::after { animation-delay: -1.1s; }
   .dlab { position: absolute; transform: translate(-50%, -50%); font-family: var(--sans); font-weight: 700; font-size: 11px; color: #8fb4ff; background: #111a3d; padding: 2px 8px; border-radius: 7px; border: 1px solid rgb(143 180 255 / .35); white-space: nowrap; }
+
+  .foot .srcs { flex: 1; text-align: center; padding: 0 24px; font-size: 11.5px; color: #8e8e93; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sub sup, .warn sup, .stat sup { font-size: .6em; margin-left: 1px; }
+  /* ===== Opportunity: the customer's question ===== */
+  .askgrid { display: grid; grid-template-columns: 440px 1fr; gap: 36px; margin-top: 22px; height: 410px; }
+  .mascot { position: relative; border-radius: 26px; background: linear-gradient(180deg, #fff6ea, #fffdf9); overflow: hidden; }
+  .mascot svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .mascot .who { position: absolute; left: 18px; top: 16px; z-index: 1; font-family: var(--sans); font-weight: 700; font-size: 12.5px; color: #b06d00; background: #fff3e0; padding: 4px 11px; border-radius: 980px; }
+  .mascot .head { transform-box: view-box; transform-origin: 220px 262px; }
+  .active .mascot .head { animation: tilt 3.6s ease-in-out infinite; }
+  @keyframes tilt { 0%, 10% { transform: rotate(0); } 20%, 42% { transform: rotate(-13deg); } 52%, 58% { transform: rotate(0); } 68%, 90% { transform: rotate(11deg); } 100% { transform: rotate(0); } }
+  .mascot .eye { transform-box: fill-box; transform-origin: center; animation: blinkEye 3.6s infinite; }
+  @keyframes blinkEye { 0%, 45%, 51%, 100% { transform: scaleY(1); } 48% { transform: scaleY(.1); } }
+  .mascot .torso { transform-box: fill-box; transform-origin: center bottom; animation: breathe 3.6s ease-in-out infinite; }
+  @keyframes breathe { 50% { transform: scaleY(1.025); } }
+  .mascot .q { opacity: 0; font-family: var(--display); transform-box: fill-box; transform-origin: center bottom; }
+  .active .mascot .q { animation: qpop 3.6s var(--ease) infinite; }
+  .active .mascot .q2 { animation-delay: .45s; } .active .mascot .q3 { animation-delay: 1.9s; }
+  @keyframes qpop { 0% { opacity: 0; transform: translateY(10px) scale(.4); } 12% { opacity: 1; transform: translateY(0) scale(1.15); } 18%, 60% { opacity: 1; transform: none; } 78%, 100% { opacity: 0; transform: translateY(-16px); } }
+  .aichat { background: #fff; border-radius: 26px; padding: 18px 26px 20px; box-shadow: 0 30px 70px rgb(0 0 0 / .10), 0 0 0 1px rgb(0 0 0 / .04); display: flex; flex-direction: column; }
+  .aichat .bar { display: flex; align-items: center; gap: 7px; margin-bottom: 16px; }
+  .aichat .bar i { width: 11px; height: 11px; border-radius: 50%; background: #e3e3e8; }
+  .aichat .bar span { margin-left: 10px; font-family: var(--sans); font-weight: 700; font-size: 13px; color: var(--muted); }
+  .aichat .msgs { flex: 1; display: flex; flex-direction: column; gap: 12px; }
+  .aichat .m { max-width: 72%; padding: 12px 17px; border-radius: 18px; font-size: 17.5px; line-height: 1.5; opacity: 0; transform: translateY(8px); transition: opacity .35s, transform .35s; }
+  .aichat .m.show { opacity: 1; transform: none; }
+  .aichat .m.me { align-self: flex-end; background: var(--blue); color: #fff; border-bottom-right-radius: 6px; }
+  .aichat .m.ai { align-self: flex-start; background: #f1f4fa; border-bottom-left-radius: 6px; }
+  .aichat .m.paste { background: #fff; color: var(--fg); border: 1.5px dashed #ff9f0a; display: flex; flex-direction: column; gap: 2px; }
+  .aichat .m.paste b { font-family: var(--sans); font-size: 15.5px; } .aichat .m.paste span { font-size: 13.5px; color: #b06d00; }
+  .aichat .warn { padding: 12px 16px; border-radius: 14px; background: #fff3e0; color: #b06d00; font-family: var(--sans); font-weight: 700; font-size: 15px; opacity: 0; transform: translateY(8px); transition: opacity .4s, transform .4s; }
+  .aichat .warn.show { opacity: 1; transform: none; }
+  .voices { display: grid; grid-template-columns: 1fr 1fr 1fr 1.15fr; gap: 14px; margin-top: 18px; }
+  .voices .v { background: #f5f6f8; border-radius: 18px; padding: 13px 18px 14px; }
+  .voices .v em { font-style: normal; display: inline-block; font-size: 12px; padding: 2px 9px; border-radius: 980px; font-family: var(--sans); font-weight: 700; margin-bottom: 6px; }
+  .voices .v b { display: block; font-weight: 400; font-size: 16.5px; line-height: 1.4; }
+  .voices .v.opp { background: linear-gradient(135deg, #2f6bff, #7d5cf5); color: #fff; }
+  .voices .v.opp em { background: rgb(255 255 255 / .22); color: #fff; }
+
+  /* ===== Opportunity: noncustomers ===== */
+  .ncgrid { display: grid; grid-template-columns: 500px 1fr; gap: 36px; margin-top: 16px; height: 400px; }
+  .rings svg { width: 100%; height: 100%; }
+  .rings .r { transform-box: fill-box; transform-origin: center; }
+  .active .rings .r { animation: ringIn .9s var(--ease) both; }
+  .active .rings .r1 { animation-delay: .35s; } .active .rings .r2 { animation-delay: .55s; } .active .rings .r3 { animation-delay: .75s; }
+  @keyframes ringIn { from { transform: scale(.6); opacity: 0; } }
+  .rings .bound { transform-box: fill-box; transform-origin: center; animation: spin 18s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .tiers { display: grid; gap: 12px; align-content: start; }
+  .tier { display: grid; grid-template-columns: 44px 1fr; gap: 14px; background: color-mix(in srgb, var(--tc) 6%, #fff); border: 1px solid color-mix(in srgb, var(--tc) 22%, #fff); border-radius: 20px; padding: 14px 20px; }
+  .tier .tn { width: 40px; height: 40px; border-radius: 13px; background: var(--tc); color: #fff; display: grid; place-items: center; font-family: var(--display); font-size: 21px; }
+  .tier h4 { font-family: var(--display); font-weight: 400; font-size: 23px; }
+  .tier h4 small { font-family: var(--sans); font-size: 12.5px; font-weight: 700; color: var(--tc); margin-left: 6px; }
+  .tier p { font-size: 15.5px; line-height: 1.5; color: #3a3a3c; margin-top: 2px; }
+  .tier q { display: block; margin-top: 4px; font-size: 15px; color: var(--tc); quotes: none; }
+  .keymsg { margin-top: 14px; padding: 12px 20px; border-radius: 16px; background: #1d1d1f; color: #fff; font-size: 17.5px; display: flex; align-items: center; gap: 14px; }
+  .keymsg b { font-family: var(--sans); font-size: 12.5px; background: var(--orange); color: #1d1d1f; padding: 3px 10px; border-radius: 980px; }
+  .keymsg em { font-style: normal; color: #ffc978; }
+
+  /* ===== Market ===== */
+  .mkgrid { display: grid; grid-template-columns: 1fr 640px; gap: 30px; margin-top: 22px; }
+  .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-content: start; }
+  .stat { background: #f5f6f8; border-radius: 20px; padding: 16px 20px; }
+  .stat b { display: block; font-family: var(--display); font-weight: 400; font-size: 46px; line-height: 1.05; color: var(--blue); }
+  .stat b.sm { font-size: 30px; }
+  .stat span { display: block; font-size: 15px; line-height: 1.45; color: #3a3a3c; margin-top: 4px; }
+  .stat.warnst b { color: #d70015; } .stat.warnst { background: #fdf1f1; }
+  .stat.wide { grid-column: span 2; display: flex; align-items: baseline; gap: 16px; padding: 14px 20px; }
+  .stat.wide span { margin-top: 0; }
+  .lbl { font-family: var(--sans); font-weight: 700; font-size: 12.5px; color: var(--muted); }
+  .stat span.lbl { display: inline-block; white-space: nowrap; color: var(--muted); }
+  .arche { background: #f7f8fa; border-radius: 22px; padding: 18px 22px; }
+  .arche h4 { font-family: var(--display); font-weight: 400; font-size: 23px; margin-bottom: 8px; }
+  .arche sup, .gap sup { font-size: .6em; }
+  .ar { display: grid; grid-template-columns: 30px 1fr; gap: 12px; align-items: center; padding: 5px 0; border-top: 1px solid #ebedf0; }
+  .ar i { font-style: normal; width: 28px; height: 28px; border-radius: 9px; background: #e5e7ec; display: grid; place-items: center; font-family: var(--display); font-size: 15px; }
+  .ar b { display: block; font-weight: 400; font-size: 17px; } .ar span { font-size: 13.5px; color: var(--muted); }
+  .conv { margin-top: 8px; } .conv div { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+  .conv em { font-style: normal; font-size: 13.5px; padding: 4px 11px; border-radius: 980px; background: #e8e9ed; color: #6e6e73; }
+  .gap { margin-top: 12px; padding: 12px 16px; border-radius: 16px; background: linear-gradient(135deg, #2f6bff, #7d5cf5); color: #fff; }
+  .gap .lbl { color: rgb(255 255 255 / .8); }
+  .gaps { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 4px; }
+  .gaps b { font-size: 17px !important; margin: 0 0 3px !important; } .gaps span { display: block; font-size: 13.5px !important; line-height: 1.45; }
+  .gaps em { font-style: normal; color: #ffe27a; } .gap b { display: block; font-weight: 400; font-size: 21px; margin: 2px 0; } .gap span { font-size: 14.5px; line-height: 1.45; }
+
+  /* ===== Strategy canvas ===== */
+  .cvsvg { display: block; width: 1440px; height: 272px; margin-top: 6px; }
+  .cv-line { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .cv-dot { transition: opacity .4s; opacity: 0; } .cv-on .cv-dot { opacity: 1; }
+  .errc { display: grid; grid-template-columns: 1fr 1.05fr 1.15fr 1.5fr; gap: 12px; margin-top: 6px; }
+  .ec { border-radius: 18px; padding: 10px 16px 12px; background: color-mix(in srgb, var(--ec) 6%, #fff); border: 1px solid color-mix(in srgb, var(--ec) 22%, #fff); }
+  .ec h4 { font-family: var(--display); font-weight: 400; font-size: 21px; color: var(--ec); }
+  .ec h4 small { font-family: var(--sans); font-size: 11.5px; font-weight: 700; margin-left: 4px; opacity: .8; }
+  .ec ul { list-style: none; margin-top: 4px; } .ec li { font-size: 14px; line-height: 1.4; padding-left: 12px; position: relative; color: #3a3a3c; }
+  .ec li::before { content: ""; position: absolute; left: 0; top: .62em; width: 5px; height: 5px; border-radius: 50%; background: var(--ec); }
+  .ec.ecr { background: color-mix(in srgb, var(--ec) 11%, #fff); } .ec.ecr b { font-weight: 400; color: #5b3fd6; }
+
+  /* ===== References ===== */
+  .refs { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 26px; margin-top: 26px; }
+  .refs h4 { font-family: var(--display); font-weight: 400; font-size: 22px; margin-bottom: 8px; }
+  .refs ol { padding-left: 20px; font-family: var(--sans); font-size: 13.5px; line-height: 1.5; color: #3a3a3c; }
+  .refs li { margin-bottom: 10px; } .refs a { color: var(--info); text-decoration: none; word-break: break-all; }
+
+  /* ===== Business model ===== */
+  .bmgrid { display: grid; grid-template-columns: 1fr 1.1fr 1fr; gap: 18px; margin-top: 22px; }
+  .bmcol { background: #f7f8fa; border-radius: 22px; padding: 16px 20px; }
+  .bmcol h4 { font-family: var(--display); font-weight: 400; font-size: 22px; display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .bmcol h4 i { font-style: normal; width: 30px; height: 30px; border-radius: 10px; background: #1e8e3e; color: #fff; display: grid; place-items: center; font-size: 16px; }
+  .bv { background: #fff; border-radius: 14px; padding: 10px 14px; margin-bottom: 9px; }
+  .bv em, .rv em { font-style: normal; display: inline-block; font-size: 11.5px; padding: 2px 9px; border-radius: 980px; font-family: var(--sans); font-weight: 700; }
+  .bv b { display: block; font-weight: 400; font-size: 17px; margin-top: 4px; } .bv span { font-size: 13.5px; color: var(--muted); }
+  .rv { background: #fff; border-radius: 14px; padding: 10px 14px; margin-bottom: 9px; }
+  .rv div { display: flex; align-items: center; gap: 8px; } .rv b { font-weight: 400; font-size: 18px; }
+  .rv span { display: block; font-size: 14px; line-height: 1.45; color: #3a3a3c; margin-top: 3px; }
+  .bmnote { font-size: 13px; color: var(--muted); margin-top: 2px; }
+  .bmcol.vi { background: linear-gradient(160deg, #eef4ff, #f4efff); }
+  .vix { background: #fff; border-radius: 14px; padding: 10px 14px; margin-bottom: 9px; }
+  .vix b { display: block; font-weight: 400; font-size: 18px; color: #5b3fd6; margin-top: 2px; } .vix > span:not(.lbl) { font-size: 13.5px; color: var(--muted); }
+  .vix ul { list-style: none; margin-top: 4px; } .vix li { font-size: 14.5px; line-height: 1.45; padding-left: 12px; position: relative; color: #3a3a3c; margin-bottom: 3px; }
+  .vix li::before { content: ""; position: absolute; left: 0; top: .62em; width: 5px; height: 5px; border-radius: 50%; background: #1e8e3e; }
+
+  /* ===== Tech strategy: AI role ===== */
+  .aggrid { display: grid; grid-template-columns: 1fr 400px; gap: 26px; margin-top: 22px; }
+  .agt { background: #f7f8fa; border-radius: 22px; padding: 6px 20px; }
+  .agr { display: grid; grid-template-columns: 150px 1fr 1.25fr 150px; gap: 16px; align-items: center; padding: 26px 0; border-top: 1px solid #e8e9ed; font-size: 15.5px; line-height: 1.45; color: #3a3a3c; }
+  .agr.head { border-top: 0; padding: 10px 0 8px; font-family: var(--sans); font-weight: 700; font-size: 12.5px; color: var(--muted); }
+  .agr b { font-weight: 400; font-family: var(--display); font-size: 20px; color: var(--fg); }
+  .agr em { font-style: normal; display: inline-block; padding: 4px 11px; border-radius: 980px; background: #f1ecff; color: #6e4ff6; font-size: 14px; }
+  .agchart { position: relative; background: #f7f8fa; border-radius: 22px; padding: 14px; }
+  .agchart svg { width: 100%; height: 100%; }
+  .agchart .tagc { position: absolute; right: 16px; top: 14px; font-family: var(--sans); font-size: 11.5px; font-weight: 700; color: var(--muted); background: #fff; padding: 3px 9px; border-radius: 980px; }
+  .ag-l1, .ag-l2 { stroke-dasharray: 420; stroke-dashoffset: 420; }
+  .active .ag-l1 { animation: agDraw 1.4s .4s var(--ease) forwards; } .active .ag-l2 { animation: agDraw 1.6s .8s var(--ease) forwards; }
+  @keyframes agDraw { to { stroke-dashoffset: 0; } }
+  .agfoot { display: flex; align-items: center; gap: 10px; margin-top: 26px; flex-wrap: wrap; }
+  .agfoot span { font-family: var(--sans); font-weight: 700; font-size: 13px; color: var(--muted); margin-right: 4px; }
+  .agfoot em { font-style: normal; font-size: 15px; padding: 6px 14px; border-radius: 980px; background: #fff; border: 1px solid #e3e6ec; }
+  .agfoot i { font-style: normal; margin-left: auto; font-size: 14px; color: var(--info); }
+
+  /* ===== Execution ===== */
+  .phases { display: grid; grid-template-columns: 1fr 40px 1fr 40px 1fr; align-items: stretch; margin-top: 24px; }
+  .ph { background: #f7f8fa; border: 1px solid #e6e8ed; border-radius: 22px; padding: 22px 24px 26px; }
+  .ph.done { border-color: #bfe3c8; background: #f1faf3; }
+  .phh { display: flex; align-items: center; gap: 10px; }
+  .phh .pn { font-family: var(--display); font-size: 26px; color: #0a9396; }
+  .phh em { font-style: normal; font-size: 11.5px; padding: 3px 10px; border-radius: 980px; font-family: var(--sans); font-weight: 700; }
+  .ph h4 { font-family: var(--display); font-weight: 400; font-size: 25px; margin: 4px 0 8px; }
+  .ph dl { display: grid; grid-template-columns: 38px 1fr; gap: 14px 10px; }
+  .ph dt { font-family: var(--sans); font-weight: 700; font-size: 12.5px; color: var(--muted); padding-top: 2px; }
+  .ph dd { font-size: 16px; line-height: 1.45; color: #3a3a3c; }
+  .pharrow { display: grid; place-items: center; }
+  .phases .ph { min-height: 440px; padding: 28px 28px 30px; }
+  .phases .ph h4 { font-size: 30px; margin: 8px 0 18px; }
+  .phases .ph dl { gap: 20px 12px; grid-template-columns: 44px 1fr; }
+  .phases .ph dd { font-size: 17.5px; line-height: 1.5; }
+  .phases .ph dt { font-size: 13.5px; padding-top: 3px; } .pharrow svg { width: 34px; }
+  .pharrow path { stroke: #0a9396; stroke-width: 3; fill: none; } .pharrow polygon { fill: #0a9396; }
+
+  /* ===== Summary ===== */
+
+  /* ===== Appendix tab ===== */
+  .tab.appx { flex: 1.4 1 0; background: #f0f0f2; }
+  .tab.appx.on { background: #6e6e73; border-color: #6e6e73; }
+
+  /* ===== Connection methods (slide: control point) ===== */
+  .protos { position: relative; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 18px; }
+  .pt { background: color-mix(in srgb, var(--pc) 6%, #fff); border: 1px solid color-mix(in srgb, var(--pc) 20%, #fff); border-radius: 18px; padding: 12px 18px 14px; }
+  .pth { display: flex; align-items: center; gap: 10px; }
+  .pth b { font-family: var(--display); font-weight: 400; font-size: 24px; color: var(--pc); }
+  .pth em { font-style: normal; font-family: var(--sans); font-weight: 700; font-size: 12px; padding: 3px 10px; border-radius: 980px; background: var(--pc); color: #fff; }
+  .pt p { font-size: 14.5px; line-height: 1.45; color: #3a3a3c; margin: 4px 0 10px; min-height: 42px; }
+  .ptbar { height: 8px; border-radius: 980px; background: color-mix(in srgb, var(--pc) 14%, #fff); overflow: hidden; }
+  .ptbar i { display: block; height: 100%; border-radius: 980px; background: var(--pc); transform-origin: left; transform: scaleX(0); transition: transform 1.2s var(--ease) .5s; }
+  .active .ptbar i { transform: scaleX(1); }
+  .ptscale { display: none; }
+  .ptl { display: block; font-family: var(--sans); font-size: 11px; font-weight: 700; color: var(--muted); margin-bottom: 4px; }
+  .pt p { margin-bottom: 6px !important; }
+  .sprawlgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 14px; }
+  .sprawlgrid .panel { padding: 12px 16px 6px; }
+  .sprawlgrid .panel h4 { font-size: 21px; display: flex; align-items: center; justify-content: space-between; }
+  .sprawlgrid svg { display: block; width: 100%; height: 340px; }
+  .protos { gap: 12px !important; margin-top: 14px !important; }
+  .protos .pt { padding: 8px 16px 10px; border-radius: 14px; }
+  .protos .pth b { font-size: 20px; } .protos .pth em { font-size: 11px; padding: 2px 8px; }
+  .protos .pt p { font-size: 13px; min-height: 0; margin: 2px 0 6px !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .protos .ptl { display: none; }
+  .protos .ptbar { height: 6px; }
+  .plg { display: flex; gap: 10px; font-family: var(--sans); font-size: 12px; font-weight: 700; color: var(--muted); }
+  .plg i { font-style: normal; display: flex; align-items: center; gap: 5px; }
+  .plg i::before { content: ""; width: 14px; height: 3px; border-radius: 2px; background: var(--c); }
+
+  /* ===== Visual rework: noncustomer map ===== */
+  .ncmap { display: block; width: 1440px; height: 480px; margin-top: 14px; overflow: visible; }
+  .ncmap .r { transform-box: fill-box; transform-origin: center; }
+  .active .ncmap .r { animation: ringIn .9s var(--ease) both; }
+  .active .ncmap .r1 { animation-delay: .3s; } .active .ncmap .r2 { animation-delay: .5s; } .active .ncmap .r3 { animation-delay: .7s; }
+  .ncmap .bound { transform-box: fill-box; transform-origin: center; animation: spin 18s linear infinite; }
+  .ncmap .lead { stroke-dasharray: 400; stroke-dashoffset: 400; }
+  .active .ncmap .lead { transition: stroke-dashoffset 1s var(--ease); stroke-dashoffset: 0; }
+  .ncmap .ncc { opacity: 0; transform: translateX(24px); transition: opacity .6s var(--ease), transform .6s var(--ease); }
+  .active .ncmap .ncc { opacity: 1; transform: none; }
+  .ncmap .keyp { opacity: 0; transform: scale(.7); transform-box: fill-box; transform-origin: center; transition: opacity .4s, transform .5s cubic-bezier(.3,1.6,.5,1); }
+  .active .ncmap .keyp { opacity: 1; transform: none; }
+
+  /* ===== Visual rework: market ===== */
+  .kpis { display: grid; grid-template-columns: repeat(4, 1fr) .8fr; gap: 12px; margin-top: 20px; }
+  .kpi { background: #f5f6f8; border-radius: 18px; padding: 12px 18px 14px; }
+  .kpi b { display: block; font-family: var(--display); font-weight: 400; font-size: 44px; line-height: 1.05; color: var(--blue); }
+  .kpi span { font-size: 14px; color: #3a3a3c; } .kpi sup { font-size: .6em; }
+  .kpi.red { background: #fdf1f1; } .kpi.red b { color: #d70015; }
+  .kpi .why { display: block; margin-top: 3px; font-size: 12.5px; font-weight: 700; color: #d70015; font-family: var(--sans); }
+  .kpi.dim b { color: #6e6e73; font-size: 34px; margin-top: 6px; }
+  .ocean { display: block; width: 1440px; height: 360px; margin-top: 18px; overflow: visible; }
+  .ocean .flow { stroke-dasharray: 6 8; animation: flow 1.2s linear infinite; }
+  .ocean .sea { transform-box: fill-box; transform-origin: center; animation: seaPulse 3.2s ease-in-out infinite; }
+  @keyframes seaPulse { 50% { transform: scale(1.04); opacity: .35; } }
+  .ocean .chip { opacity: 0; transform: scale(.6); transform-box: fill-box; transform-origin: center; transition: opacity .4s, transform .5s cubic-bezier(.3,1.6,.5,1); }
+  .active .ocean .chip { opacity: 1; transform: none; }
+  .ocean .slot rect.sl { stroke-dasharray: 8 6; animation: flow 2.4s linear infinite; }
+  .ocean .slot { opacity: 0; transform: translateX(20px); transition: opacity .6s var(--ease), transform .6s var(--ease); }
+  .active .ocean .slot { opacity: 1; transform: none; }
+
+  /* ===== Visual rework: strategy canvas ===== */
+  .cvsvg { height: 300px !important; }
+  .errc2 { display: grid; grid-template-columns: 1fr 1fr 1.25fr 1.3fr; gap: 12px; margin-top: 8px; }
+  .eg { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; padding: 10px 14px; border-radius: 16px; background: color-mix(in srgb, var(--ec) 7%, #fff); border: 1px solid color-mix(in srgb, var(--ec) 22%, #fff); }
+  .eg b { font-family: var(--display); font-weight: 400; font-size: 20px; color: var(--ec); margin-right: 4px; }
+  .eg em { font-style: normal; font-size: 14px; padding: 4px 11px; border-radius: 980px; background: #fff; color: #3a3a3c; border: 1px solid color-mix(in srgb, var(--ec) 18%, #fff); }
+  .eg.cr2 { background: linear-gradient(135deg, #2f6bff, #7d5cf5); border-color: transparent; }
+  .eg.cr2 b { color: #fff; } .eg.cr2 em { background: rgb(255 255 255 / .18); color: #fff; border-color: rgb(255 255 255 / .3); }
+
+  /* ===== Visual rework: revenue ===== */
+  .revchart { position: relative; background: #f7f8fa; border-radius: 22px; padding: 6px 10px 0; }
+  .revchart svg { display: block; width: 100%; height: auto; }
+  .revchart .tagc { position: absolute; right: 16px; top: 14px; font-family: var(--sans); font-size: 11.5px; font-weight: 700; color: var(--muted); background: #fff; padding: 3px 9px; border-radius: 980px; }
+  .rv-bar { transform: scaleY(0); transform-box: fill-box; transform-origin: center bottom; transition: transform .7s var(--ease); }
+  .active .rv-bar { transform: scaleY(1); }
+  .vistrip { display: flex; align-items: center; gap: 12px; margin-top: 14px; padding: 10px 16px; border-radius: 16px; background: #f7f8fa; }
+  .vistrip .vt { font-family: var(--sans); font-weight: 700; font-size: 12.5px; color: var(--muted); margin-right: 4px; }
+  .vistrip .vh { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .vistrip .vh b { font-family: var(--display); font-weight: 400; font-size: 19px; color: #1e8e3e; margin-right: 2px; }
+  .vistrip .vh em { font-style: normal; font-size: 14px; padding: 4px 11px; border-radius: 980px; background: #fff; border: 1px solid #e3e6ec; }
+  .vistrip .vx { font-style: normal; font-family: var(--display); font-size: 24px; color: #7d5cf5; margin: 0 6px; }
+
+  /* ===== Moats (competitive advantage) ===== */
+  .cvsvg { height: 282px !important; }
+  .moats .mt { padding: 16px 20px; }
+  .moats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 12px; }
+  .mt { display: grid; grid-template-columns: 64px 1fr; gap: 16px; align-items: center; padding: 16px 20px; border-radius: 20px; background: color-mix(in srgb, var(--mc) 6%, #fff); border: 1px solid color-mix(in srgb, var(--mc) 20%, #fff); }
+  .mt .mi { width: 60px; height: 60px; border-radius: 18px; background: var(--mc); color: #fff; display: grid; place-items: center; box-shadow: 0 10px 24px color-mix(in srgb, var(--mc) 35%, transparent); }
+  .mt .mi svg { width: 30px; height: 30px; }
+  .mt b { display: block; font-family: var(--display); font-weight: 400; font-size: 23px; }
+  .mt p { font-size: 15px; color: #3a3a3c; margin-top: 2px; }
+  .mt .sn { display: inline-block; font-style: normal; font-family: var(--sans); font-weight: 800; font-size: 12px; color: var(--mc); background: color-mix(in srgb, var(--mc) 12%, #fff); padding: 2px 10px; border-radius: 980px; margin-bottom: 4px; }
+  .mt small { display: block; font-size: 13px; color: color-mix(in srgb, var(--mc) 75%, #000); margin-top: 4px; }
+
+  /* ===== Market KPIs + risk-control scope ===== */
+  .kpis.k4 { grid-template-columns: 1fr 1fr 1.25fr 2fr; }
+  .riskc { border-radius: 18px; padding: 12px 18px 12px; background: linear-gradient(135deg, #eef4ff, #f4efff); border: 1px solid #d9e3fb; display: flex; flex-direction: column; justify-content: center; gap: 7px; }
+  .riskc .rh { font-family: var(--display); font-size: 19px; color: #1d1d1f; }
+  .riskc .rh small { font-family: var(--sans); font-size: 12px; font-weight: 700; color: var(--muted); margin-left: 4px; }
+  .riskc .rcs { display: flex; flex-wrap: wrap; gap: 6px; }
+  .riskc em { font-style: normal; font-size: 14px; padding: 4px 12px; border-radius: 980px; }
+  .riskc em.on { background: #2f6bff; color: #fff; }
+  .riskc em.off { background: #fff; color: #a1a1a6; border: 1px dashed #c7c7cc; }
+  .riskc .rl { display: flex; align-items: center; gap: 6px; font-family: var(--sans); font-size: 11.5px; font-weight: 700; color: var(--muted); }
+  .riskc em.has { background: #e8e9ed; color: #3a3a3c; }
+  .riskc em.gp { background: #fff; color: #2f6bff; border: 1.5px dashed #2f6bff; font-weight: 700; box-shadow: 0 0 0 4px rgb(47 107 255 / .08); }
+  .riskc .rl i.has { background: #e8e9ed; } .riskc .rl i.gp { background: #fff; border: 1.5px dashed #2f6bff; margin-left: 8px; }
+  .riskc .rl i { width: 10px; height: 10px; border-radius: 3px; display: inline-block; } .riskc .rl i.on { background: #2f6bff; } .riskc .rl i.off { background: #fff; border: 1px dashed #a1a1a6; margin-left: 8px; }
+
+
+  /* ===== Customer question: three-way comparison ===== */
+  .aichat .msgs { gap: 10px !important; }
+  .aichat .cmp3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 8px; opacity: 0; transform: translateY(8px); transition: opacity .4s, transform .4s; }
+  .aichat .cmp3.show { opacity: 1; transform: none; }
+  .aichat .cmp3 > div { display: flex; align-items: center; gap: 8px; padding: 7px 12px; border-radius: 12px; background: #f5f6f8; border: 1px solid #e6e8ed; }
+  .aichat .cmp3 b { font-family: var(--display); font-weight: 400; font-size: 15px; margin-right: auto; white-space: nowrap; }
+  .aichat .cmp3 span { font-family: var(--sans); font-weight: 700; font-size: 11.5px; white-space: nowrap; }
+  .aichat .cmp3 .ok { color: #1e8e3e; } .aichat .cmp3 .no { color: #d70015; }
+  .aichat .cmp3 .need { background: #fff8e6; border: 1.5px dashed #f29900; }
+  .aichat .cmp3 .need .q { color: #b26a00; font-size: 13px; }
+  .voices { margin-top: 14px !important; }
+
+  /* ===== Revenue structure (one-time customization + two subscriptions) ===== */
+  .rsrow { display: grid; grid-template-columns: 1fr 74px 2fr; gap: 10px; margin-top: 24px; align-items: stretch; }
+  .rsg { position: relative; display: grid; gap: 14px; padding: 22px 14px 14px; border-radius: 24px; border: 1.5px dashed #d8dbe2; }
+  .rsg.one { border-color: #ffd28a; background: #fffaf0; }
+  .rsg.rec { grid-template-columns: 1fr 1fr; border-color: #b9d3ff; background: linear-gradient(135deg, #f1fbf4, #eef4ff); }
+  .rsg .gl { position: absolute; top: -13px; left: 20px; font-family: var(--sans); font-weight: 800; font-size: 12.5px; padding: 4px 12px; border-radius: 980px; background: #fff; border: 1.5px solid #d8dbe2; color: #3a3a3c; }
+  .rsg.one .gl { border-color: #ffc061; color: #b26a00; }
+  .rsg.rec .gl { border-color: #8db4ff; color: #1f55d6; }
+  .rs { background: #fff; border-radius: 18px; padding: 14px 16px; box-shadow: 0 8px 24px rgb(0 0 0 / .05); }
+  .rs .rsh { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .rs .si { width: 44px; height: 44px; border-radius: 14px; background: var(--sc); color: #fff; display: grid; place-items: center; box-shadow: 0 8px 18px color-mix(in srgb, var(--sc) 35%, transparent); }
+  .rs .si svg { width: 24px; height: 24px; }
+  .rs b { font-family: var(--display); font-weight: 400; font-size: 22px; }
+  .rs em { margin-left: auto; font-style: normal; font-family: var(--sans); font-weight: 700; font-size: 11.5px; padding: 3px 10px; border-radius: 980px; color: var(--sc); background: color-mix(in srgb, var(--sc) 10%, #fff); }
+  .rs dl { display: grid; grid-template-columns: 62px 1fr; gap: 4px 8px; }
+  .rs dt { font-family: var(--sans); font-weight: 700; font-size: 11.5px; color: var(--muted); padding-top: 2px; }
+  .rs dd { font-size: 14px; color: #3a3a3c; }
+  .rsarrow { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: #8e8e93; text-align: center; font-family: var(--sans); font-weight: 700; font-size: 11.5px; line-height: 1.35; }
+  .rsarrow svg { width: 40px; height: 40px; color: #1e8e3e; }
+  [data-hook="bm"] .revchart { margin-top: 16px; padding: 4px 8px 0; }
+  [data-hook="bm"] .revchart svg { height: 300px; }
+  .rv-dn { transform-origin: center top; }
+  .rv-draw { transition: stroke-dashoffset 1.4s var(--ease) 1.1s; }
+  .active .rv-draw { stroke-dashoffset: 0; }
+  .rv-tag, .rv-fade { opacity: 0; transition: opacity .6s var(--ease); }
+  .active .rv-tag { opacity: 1; }
+  .active .rv-fade { opacity: 1; transition-delay: 1s; }
+  .rv-mix { transform: scaleX(0); transform-box: fill-box; transform-origin: left center; transition: transform .8s var(--ease); }
+  .active .rv-mix { transform: scaleX(1); }
+
+  /* ===== Execution: staircase ===== */
+  .stairs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; align-items: end; margin-top: 30px; height: 340px; }
+  .xst { display: flex; flex-direction: column; justify-content: flex-end; gap: 12px; height: 100%; }
+  .xst .xtg { display: flex; align-items: center; gap: 12px; padding: 0 6px; }
+  .xst .ti { flex: none; width: 50px; height: 50px; border-radius: 50%; display: grid; place-items: center; color: var(--c); background: color-mix(in srgb, var(--c) 12%, #fff); border: 1.5px solid color-mix(in srgb, var(--c) 35%, #fff); }
+  .xst .ti svg { width: 26px; height: 26px; }
+  .xst .xtg small { display: block; font-family: var(--sans); font-weight: 800; font-size: 12px; color: var(--c); }
+  .xst .xtg b { display: block; font-family: var(--sans); font-weight: 700; font-size: 14.5px; color: #3a3a3c; line-height: 1.35; }
+  .xst .blk { position: relative; height: var(--h); border-radius: 22px 22px 8px 8px; padding: 18px 22px; color: #fff; overflow: visible;
+    background: linear-gradient(160deg, color-mix(in srgb, var(--c) 78%, #fff), var(--c)); box-shadow: 0 18px 36px color-mix(in srgb, var(--c) 30%, transparent), inset 0 1px 0 rgb(255 255 255 / .35);
+    transform: scaleY(0); transform-origin: bottom; transition: transform .8s var(--ease); }
+  .active .xst .blk { transform: scaleY(1); }
+  .xst .pn { font-family: var(--display); font-size: 30px; line-height: 1; margin-right: 10px; }
+  .xst h4 { display: inline; font-family: var(--display); font-weight: 400; font-size: 23px; }
+  .xst .bc { display: inline-block; margin-top: 10px; font-style: normal; font-family: var(--sans); font-weight: 700; font-size: 12px; padding: 3px 11px; border-radius: 980px; background: rgb(255 255 255 / .22); }
+  .xst .here { position: absolute; right: 16px; top: -16px; display: flex; align-items: center; gap: 6px; font-family: var(--sans); font-weight: 800; font-size: 12.5px; color: #1e8e3e; background: #fff; padding: 5px 12px; border-radius: 980px; box-shadow: 0 6px 16px rgb(0 0 0 / .12); }
+  .xst .here i { width: 8px; height: 8px; border-radius: 50%; background: #1e8e3e; animation: ping 1.4s infinite; }
+  .stdet { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 18px; }
+  .sd { padding: 14px 18px; border-radius: 18px; background: color-mix(in srgb, var(--c) 5%, #fff); border: 1px solid color-mix(in srgb, var(--c) 18%, #fff); }
+  .sd dl { display: grid; grid-template-columns: 64px 1fr; gap: 8px 8px; align-items: center; }
+  .sd dt { font-family: var(--sans); font-weight: 700; font-size: 12px; color: var(--muted); }
+  .sd dd { display: flex; flex-wrap: wrap; gap: 5px; }
+  .sd dd em { font-style: normal; font-size: 13.5px; padding: 3px 10px; border-radius: 980px; background: #fff; border: 1px solid #e3e6ec; color: #3a3a3c; }
+  .sd dd.sl em { background: var(--c); border-color: transparent; color: #fff; font-family: var(--sans); font-weight: 700; font-size: 12.5px; }
+  .xst .fills { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+  .xst .fills small { font-family: var(--sans); font-weight: 700; font-size: 12px; opacity: .85; margin-right: 2px; }
+  .xst .fills em { font-style: normal; font-family: var(--sans); font-weight: 800; font-size: 13px; padding: 4px 12px; border-radius: 980px; background: #fff; color: var(--c); }
+  .xst .wm { position: absolute; right: 18px; bottom: 10px; width: 96px; height: 96px; color: #fff; opacity: .2; }
+  .xst .wm svg { width: 100%; height: 100%; }
+  .xst:first-child .wm { width: 64px; height: 64px; }
+  /* ===== Risks: risk -> response cards ===== */
+  .rkgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 30px; }
+  .rk { position: relative; display: flex; flex-direction: column; border-radius: 22px; background: #fff; border: 1px solid #e6e8ed; box-shadow: 0 10px 28px rgb(0 0 0 / .05); overflow: hidden; }
+  .rk .rq { display: flex; align-items: center; gap: 14px; padding: 22px 22px 20px; min-height: 92px; background: #fff3f2; }
+  .rk .ri { flex: none; width: 48px; height: 48px; border-radius: 14px; display: grid; place-items: center; color: #fff; background: linear-gradient(150deg, #ff7a6b, #e5372b); box-shadow: 0 8px 18px rgb(229 55 43 / .28); }
+  .rk .ri svg, .rk .rsh svg { width: 24px; height: 24px; }
+  .rk .rq b { font-family: var(--display); font-weight: 400; font-size: 22px; line-height: 1.25; color: #3a1d1b; }
+  .rk .rarrow { position: absolute; left: 26px; top: 78px; width: 28px; height: 28px; border-radius: 50%; background: #fff; border: 1px solid #e6e8ed; color: #8e8e93; display: grid; place-items: center; z-index: 1; }
+  .rk .rarrow svg { width: 16px; height: 16px; }
+  .rk .ra { display: flex; align-items: flex-start; gap: 14px; padding: 28px 22px 42px; }
+  .rk .rsh { flex: none; width: 48px; height: 48px; border-radius: 14px; display: grid; place-items: center; color: #fff; background: linear-gradient(150deg, #5b8cff, #2f6bff); box-shadow: 0 8px 18px rgb(47 107 255 / .28); }
+  .rk .ra b { display: block; font-family: var(--display); font-weight: 400; font-size: 22px; color: #1f55d6; }
+  .rk .ra p { font-size: 15px; color: #3a3a3c; line-height: 1.45; margin-top: 2px; }
+  .rk .ref { position: absolute; right: 16px; bottom: 10px; font-family: var(--sans); font-weight: 700; font-size: 11.5px; color: var(--muted); }
+  .rklg { display: flex; gap: 18px; justify-content: flex-end; margin-top: 12px; font-family: var(--sans); font-weight: 700; font-size: 12px; color: var(--muted); }
+  .rklg span { display: flex; align-items: center; gap: 6px; }
+  .rklg i { width: 12px; height: 12px; border-radius: 4px; } .rklg i.r { background: #e5372b; } .rklg i.b { background: #2f6bff; }
+
+  /* ===== One-page summary ===== */
+  .sumhero { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 30px; margin-top: 26px; padding: 30px 34px; border-radius: 26px; overflow: hidden;
+    background: radial-gradient(600px 260px at 0% 0%, rgb(47 107 255 / .12), transparent 70%), radial-gradient(600px 260px at 100% 100%, rgb(191 90 242 / .12), transparent 70%), #f7f8fc; border: 1px solid #e3e8f5; }
+  .sumhero .shl small { font-family: var(--sans); font-weight: 800; font-size: 13px; color: var(--muted); letter-spacing: .02em; }
+  .sumhero .shl b { display: block; font-family: var(--display); font-weight: 400; font-size: 40px; line-height: 1.2; margin-top: 4px; }
+  .sumhero .shl p { font-size: 17px; color: #3a3a3c; margin-top: 6px; }
+  .sumhero .shr { display: flex; gap: 12px; }
+  .sumhero .shr span { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; width: 104px; height: 104px; border-radius: 50%; color: #fff; font-family: var(--display); font-size: 22px;
+    background: linear-gradient(150deg, color-mix(in srgb, var(--c) 70%, #fff), var(--c)); box-shadow: 0 14px 30px color-mix(in srgb, var(--c) 35%, transparent); }
+  .sumhero .shr i { font-style: normal; font-family: var(--sans); font-weight: 800; font-size: 14px; opacity: .85; }
+  .sumtl { position: relative; display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; margin-top: 40px; }
+  .sumtl::before { content: ""; position: absolute; left: 6%; right: 6%; top: 30px; height: 4px; border-radius: 4px; background: linear-gradient(90deg, #f29900, #e5372b, #7d5cf5, #1e8e3e, #2f6bff, #0a9396);
+    transform: scaleX(0); transform-origin: left; transition: transform 1.4s var(--ease) .3s; }
+  .active .sumtl::before { transform: scaleX(1); }
+  .sx { position: relative; display: flex; flex-direction: column; align-items: center; opacity: 0; transform: translateY(18px); transition: opacity .6s var(--ease), transform .6s var(--ease); transition-delay: calc(.4s + var(--i) * .15s); }
+  .active .sx { opacity: 1; transform: none; }
+  .sx .sxn { position: relative; z-index: 1; width: 64px; height: 64px; border-radius: 50%; display: grid; place-items: center; color: #fff; background: var(--c); border: 5px solid #fff; box-shadow: 0 10px 24px color-mix(in srgb, var(--c) 40%, transparent); }
+  .sx .sxn svg { width: 28px; height: 28px; }
+  .sx .sxc { position: relative; margin-top: 16px; width: 100%; flex: 1; padding: 20px 18px 40px; border-radius: 20px; background: color-mix(in srgb, var(--c) 5%, #fff); border: 1px solid color-mix(in srgb, var(--c) 20%, #fff); }
+  .sx .sxs { display: flex; align-items: center; gap: 6px; font-family: var(--sans); font-weight: 800; font-size: 12.5px; color: var(--c); }
+  .sx .sxs i { font-style: normal; width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; font-size: 11.5px; color: #fff; background: var(--c); }
+  .sx b { display: block; font-family: var(--display); font-weight: 400; font-size: 21px; line-height: 1.3; margin-top: 10px; color: #1d1d1f; }
+  .sx p { font-size: 14px; color: #3a3a3c; line-height: 1.5; margin-top: 8px; }
+  .sx small { position: absolute; left: 16px; bottom: 10px; font-family: var(--sans); font-weight: 700; font-size: 11.5px; color: var(--muted); }
 </style>
 </head>
 <body>
@@ -525,7 +920,7 @@
   </header>
 
   <!-- 1. Cover -->
-  <section class="slide" data-ch="0" data-hook="cover">
+  <section class="slide" data-tab="표지" data-ch="0" data-hook="cover">
     <div class="cover">
       <div>
         <span class="badge in">엔터프라이즈 AI 연계 플랫폼</span>
@@ -541,72 +936,184 @@
     </div>
   </section>
 
-  <!-- 2. Background: what survives -->
-  <section class="slide" data-ch="1" data-hook="survive">
+  <!-- 1b. Opportunity: the customer's question -->
+  <section class="slide" data-tab="고객의 질문" data-ch="1" data-hook="ask">
+    <div class="card" style="--ac:#ff9500">
+      <div class="eyebrow in"><i>02</i>기회 발견 · 고객의 질문</div>
+      <h2 class="in d1">“우리 직원들이 Claude에서 <span class="grad">사내 데이터를 안전하게</span> 쓸 방법은 없을까?”</h2>
+      <p class="sub in d2">한국 근로자 3명 중 2명(66.5%)이 생성형 AI를 쓰고<sup>1</sup>, 회사도 Claude를 공식 업무 도구로 정했습니다. 그런데 정작 사내 데이터는 AI에 닿지 못합니다.</p>
+      <div class="askgrid">
+        <div class="mascot in d3">
+          <span class="who">현업 직원 · 월요일 아침</span>
+          <svg viewBox="0 0 440 390" aria-label="고개를 갸우뚱하는 직원 캐릭터">
+            <circle cx="220" cy="215" r="160" fill="#ffecd2" opacity=".55"/>
+            <ellipse cx="220" cy="372" rx="118" ry="13" fill="rgb(0 0 0 / .07)"/>
+            <g class="torso">
+              <rect x="130" y="256" width="180" height="120" rx="64" fill="#5b8cff"/>
+              <path d="M196 262 L220 292 L244 262 Z" fill="#fff"/>
+              <ellipse cx="128" cy="330" rx="20" ry="27" fill="#4a7af0"/>
+              <ellipse cx="312" cy="330" rx="20" ry="27" fill="#4a7af0"/>
+              <path d="M198 268 L220 318 L242 268" fill="none" stroke="#ff9500" stroke-width="5" stroke-linecap="round"/>
+              <rect x="203" y="314" width="34" height="44" rx="6" fill="#fff" stroke="#e3e6ec"/>
+              <circle cx="220" cy="330" r="6" fill="#ffd2a8"/>
+              <rect x="210" y="341" width="20" height="4" rx="2" fill="#c7cfdd"/>
+              <rect x="213" y="348" width="14" height="3" rx="1.5" fill="#dfe4ec"/>
+            </g>
+            <g class="head">
+              <rect x="206" y="236" width="28" height="30" rx="10" fill="#f6cfaa"/>
+              <circle cx="220" cy="168" r="92" fill="#ffe0c2"/>
+              <path d="M128 166 C 126 98, 182 70, 224 72 C 274 72, 318 102, 312 162 C 292 128, 256 116, 222 118 C 186 118, 150 134, 128 166 Z" fill="#3b2f2a"/>
+              <path d="M222 74 C 214 48, 238 36, 246 52" fill="none" stroke="#3b2f2a" stroke-width="6" stroke-linecap="round"/>
+              <path d="M178 150 Q 192 140 206 146" fill="none" stroke="#3b2f2a" stroke-width="5" stroke-linecap="round"/>
+              <path d="M240 150 Q 254 152 266 150" fill="none" stroke="#3b2f2a" stroke-width="5" stroke-linecap="round"/>
+              <ellipse class="eye" cx="192" cy="176" rx="9" ry="12" fill="#1d1d1f"/>
+              <ellipse class="eye" cx="252" cy="176" rx="9" ry="12" fill="#1d1d1f"/>
+              <circle cx="195" cy="171" r="3" fill="#fff"/><circle cx="255" cy="171" r="3" fill="#fff"/>
+              <ellipse cx="170" cy="204" rx="15" ry="8" fill="#ffaaa5" opacity=".7"/>
+              <ellipse cx="274" cy="204" rx="15" ry="8" fill="#ffaaa5" opacity=".7"/>
+              <path d="M208 214 q6 -6 12 0 q6 6 12 0" fill="none" stroke="#7a4b3a" stroke-width="4" stroke-linecap="round"/>
+              <path d="M306 120 C 300 132, 300 142, 308 144 C 316 142, 314 132, 306 120 Z" fill="#9ad0ff"/>
+            </g>
+            <text class="q q1" x="330" y="96" font-size="70" fill="#ff9500">?</text>
+            <text class="q q2" x="376" y="150" font-size="42" fill="#ffb340">?</text>
+            <text class="q q3" x="78" y="110" font-size="50" fill="#7d5cf5">?</text>
+          </svg>
+        </div>
+        <div class="aichat in d4" id="askChat">
+          <div class="bar"><i></i><i></i><i></i><span>외부 AI 채팅 · 예: Claude</span></div>
+          <div class="msgs">
+            <div class="m me" data-t="지난달 우리 팀 주문 중에 납기가 늦어진 건만 정리해 줘."></div>
+            <div class="m ai" data-t="사내 주문 시스템에는 접근할 수 없어요. 데이터를 붙여 넣어 주시면 정리해 드릴게요."></div>
+            <div class="m me paste"><b>📋 주문 시스템 로그인 → 조회 → 엑셀 내려받기 → 복사 → 붙여넣기</b><span>배송 · 재고 시스템에서도 같은 작업을 또 반복…</span></div>
+          </div>
+          <div class="warn">볼 권한은 이미 있는데, 꺼내 오는 게 일입니다. 그렇다고 시스템 API나 DB를 통째로 연결하면 남의 데이터까지 보입니다.</div>
+          <div class="cmp3"><div><b>Claude 화면 조작</b><span class="ok">✓ 내 권한만</span><span class="no">✗ 느리고 불안정</span></div><div><b>API · DB 통째 연결</b><span class="no">✗ 남의 데이터까지</span><span class="ok">✓ 빠름</span></div><div class="need"><b>둘 다 되는 방법</b><span class="q">? 아직 없음</span></div></div>
+        </div>
+      </div>
+      <div class="voices">
+        <div class="v in d4"><em class="t-blue">임직원</em><b>“레거시 화면에서 일일이 복사해 붙이느라 AI를 쓰는 의미가 없어요.”</b></div>
+        <div class="v in d5"><em class="t-red">보안팀</em><b>“Claude에 연결하더라도 각자 볼 수 있는 만큼만 보여야 해요.”</b></div>
+        <div class="v in d6"><em class="t-violet">시스템 담당</em><b>“사람마다 권한이 다른데, AI용 권한을 시스템마다 새로 만들 순 없어요.”</b></div>
+        <div class="v opp in d6"><em>기회</em><b>내 권한만큼, 사내 데이터를 Claude에서 바로</b></div>
+      </div>
+      <div class="foot"><span>A2X 사업 제안</span><span class="srcs">출처 1. 한국은행, BOK 이슈노트 「AI 확산과 생산성 효과」(2026.11)</span><span class="pc"></span></div><div class="prog"></div>
+    </div>
+  </section>
+
+  <!-- 2b. Opportunity: noncustomers -->
+  <section class="slide" data-tab="비고객" data-ch="1" data-hook="noncust">
+    <div class="card" style="--ac:#ff9500">
+      <div class="eyebrow in"><i>03</i>기회 발견 · 누가 이 문제를 겪나</div>
+      <h2 class="in d1">같은 문제, <span class="grad">아직 풀지 못한 세 부류의 조직</span></h2>
+      <p class="sub in d2">돈을 내는 고객은 데이터를 가진 시스템과 IT 조직. 각자 다른 이유로 막혀 있습니다.</p>
+      <svg class="ncmap in d3" id="ncMap" viewBox="0 0 1440 480" aria-label="비고객 세 계층과 해결 열쇠"></svg>
+      <div class="foot"><span>A2X 사업 제안</span><span class="srcs">분석 틀: W. Chan Kim · Renée Mauborgne, 「Blue Ocean Shift」(2017)의 비고객 세 계층</span><span class="pc"></span></div><div class="prog"></div>
+    </div>
+  </section>
+
+  <!-- Market: value shifts to middleware (restored from 11-28 backup) -->
+  <section class="slide" data-tab="가치 이동" data-hook="survive">
     <div class="card" style="--ac:#2f6bff">
-      <div class="eyebrow in"><i>01</i>사업 배경 · 무엇이 살아남는가</div>
+      <div class="eyebrow in"><i>01</i>시장 분석 · 가치 이동</div>
       <h2 class="in d1">App 개발은 범용화되고, <span class="grad">인프라와 미들웨어</span>에 가치집중</h2>
       <p class="sub in d2">누구나 AI로 App과 Agent를 직접 만드는 시대가 옵니다. 가치는 그 아래, 수많은 App과 Agent를 연결하고 통제하는 층과 GPU 인프라에 모입니다.</p>
       <svg class="scene in d3" id="surviveSvg" viewBox="0 0 1440 520"></svg>
-      <div class="foot"><span>A2X 사업 제안</span><span class="pc"></span></div><div class="prog"></div>
+      <div class="foot"><span>A2X 사업 제안</span><span class="srcs">출처 1. Gartner(2026.7), 2030년까지 Agentic AI로 위험에 놓인 기업용 앱 소프트웨어 지출 · 2. MuleSoft 2025 Connectivity Benchmark Report(IT 리더 1,050명 조사)</span><span class="pc"></span></div><div class="prog"></div>
     </div>
   </section>
 
   <!-- 3. Background: sprawl -->
-  <section class="slide" data-ch="2" data-hook="sprawl">
+  <section class="slide" data-tab="연계 방식" data-ch="2" data-hook="sprawl">
     <div class="card" style="--ac:#d93025">
-      <div class="eyebrow in"><i>02</i>문제 · 통제 지점의 필요</div>
-      <h2 class="in d1">Agent의 확산과 통제 지점의 필요성</h2>
-      <p class="sub in d2">REST API가 퍼진 뒤 API 관리 시장이 따로 커졌듯, MCP와 A2A에도 같은 흐름이 옵니다.</p>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:28px">
-        <div class="panel in d3"><h4>지금: 통제 없는 연결</h4><p>Agent마다 시스템에 직접 붙습니다. 누가 무엇을 호출했는지 알 수 없습니다.</p><svg id="sprawlL" viewBox="0 0 680 400"></svg></div>
-        <div class="panel in d4"><h4>A2X: 하나의 관문</h4><p>등록 · 구독 · 권한 · 감사가 한곳을 거칩니다.</p><svg id="sprawlR" viewBox="0 0 680 400"></svg></div>
+      <div class="eyebrow in"><i>02</i>시장 분석 · 시장이 생기는 이유</div>
+      <h2 class="in d1">API · MCP 중심의 Agent 연계와 <span class="grad">A2A의 확산</span></h2>
+      <p class="sub in d2">Agent는 여러 방식으로 사내 시스템에 붙습니다. 지금은 API와 MCP가 주류이고, Agent끼리 일을 나누는 A2A는 확산 초기입니다.</p>
+      <div class="protos">
+        <div class="pt in d3" style="--pc:#2f6bff"><div class="pth"><b>REST API</b><em>주류 · 성숙</em></div><p>사내 시스템 대부분이 이미 제공</p><span class="ptl">확산 정도 (개념)</span><div class="ptbar"><i style="width:94%"></i></div></div>
+        <div class="pt in d3" style="--pc:#f29900"><div class="pth"><b>MCP</b><em>주류로 정착</em></div><p>Agent가 Tool을 쓰는 사실상의 표준</p><span class="ptl">확산 정도 (개념)</span><div class="ptbar"><i style="width:74%"></i></div></div>
+        <div class="pt in d4" style="--pc:#1e8e3e"><div class="pth"><b>A2A</b><em>확산 초기</em></div><p>Agent끼리 협업 · 실사용이 막 시작</p><span class="ptl">확산 정도 (개념)</span><div class="ptbar"><i style="width:30%"></i></div></div>
+        <div class="ptscale in d4"><span>도입</span><span>확산</span><span>주류</span></div>
+      </div>
+      <div class="sprawlgrid">
+        <div class="panel in d4"><h4>지금: 방식마다 따로, 통제 없는 연결<span class="plg"><i style="--c:#2f6bff">API</i><i style="--c:#f29900">MCP</i><i style="--c:#1e8e3e">A2A</i></span></h4><svg id="sprawlL" viewBox="0 0 680 300"></svg></div>
+        <div class="panel in d5"><h4>A2X: 세 방식을 하나의 관문에서<span class="plg"><i style="--c:#2f6bff">API</i><i style="--c:#f29900">MCP</i><i style="--c:#1e8e3e">A2A</i></span></h4><svg id="sprawlR" viewBox="0 0 680 300"></svg></div>
       </div>
       <div class="foot"><span>A2X 사업 제안</span><span class="pc"></span></div><div class="prog"></div>
     </div>
   </section>
 
-  <!-- 4. Problem → Solution -->
-  <section class="slide" data-ch="2" data-hook="ps">
+  <!-- 3b. Market: standards & red ocean -->
+  <section class="slide" data-tab="시장 · 경쟁" data-ch="2" data-hook="market">
     <div class="card" style="--ac:#d93025">
-      <div class="eyebrow in"><i>02</i>문제와 해법</div>
-      <h2 class="in d1">연계 현장의 문제와 A2X의 해법</h2>
-      <p class="sub in d2">흩어진 절차와 통제의 공백을 다섯 개 모듈로 해결합니다.</p>
-      <div class="ps" id="ps">
-        <div class="pshead"><span>문제</span><span></span><span>A2X 해법</span></div>
-        <div class="psr">
-          <div class="pp"><i>1</i><div><b>흩어진 신청 절차</b><span>등록 · 구독 · 방화벽 요청이 팀마다 따로 진행</span></div></div>
-          <div class="pa"><svg viewBox="0 0 120 24"><path d="M6 12 H106"/><polygon points="116,12 105,6 105,18"/></svg></div>
-          <div class="pv"><div class="mods"><em class="t-blue">웹 포탈</em><em class="t-violet">A2X Agent</em></div><b>신청 창구를 하나로, 신청서는 Agent가 작성</b><span>등록 · 구독 · 모니터링을 한 포탈에서, 외부 마스터로 입력란 자동 채움</span></div>
-        </div>
-        <div class="psr">
-          <div class="pp"><i>2</i><div><b>거친 권한 통제</b><span>API 단위 허용만으로는 Tool · 데이터 통제가 어려움</span></div></div>
-          <div class="pa"><svg viewBox="0 0 120 24"><path d="M6 12 H106"/><polygon points="116,12 105,6 105,18"/></svg></div>
-          <div class="pv"><div class="mods"><em class="t-red">MCP 권한관리</em></div><b>Tool · 파라미터 · 데이터 레벨 권한</b><span>호출자에 따라 Tool과 파라미터, 데이터 범위까지 규칙 코드로 판정</span></div>
-        </div>
-        <div class="psr">
-          <div class="pp"><i>3</i><div><b>검증되지 않은 MCP 서버</b><span>정의 · 요청 · 응답에 민감정보 · 인젝션 위험</span></div></div>
-          <div class="pa"><svg viewBox="0 0 120 24"><path d="M6 12 H106"/><polygon points="116,12 105,6 105,18"/></svg></div>
-          <div class="pv"><div class="mods"><em class="t-red">보안 · 가드레일</em></div><b>정적 · 동적 보안 검사</b><span>등록 시 Tool 정의를 검사하고, 런타임 요청 · 응답을 검사해 차단</span></div>
-        </div>
-        <div class="psr">
-          <div class="pp"><i>4</i><div><b>느린 장애 대응</b><span>로그 찾기 · 원인 추정 · 담당자 찾기의 반복</span></div></div>
-          <div class="pa"><svg viewBox="0 0 120 24"><path d="M6 12 H106"/><polygon points="116,12 105,6 105,18"/></svg></div>
-          <div class="pv"><div class="mods"><em class="t-orange">모니터링</em><em class="t-violet">오류조치 Agent</em></div><b>오류 감지와 조치 안내 자동화</b><span>호출 로그로 오류를 감지하고 Agent가 원인과 조치 방법을 안내</span></div>
-        </div>
-        <div class="psbase">
-          <div class="gwb sheen"><em class="t-orange">통합 Gateway</em><div><b>위의 모든 통제를 하나의 진입점에서 집행</b><span>API · MCP · A2A 단일 진입점 · API→MCP 변환</span></div></div>
-          <div class="prb"><span>원칙</span><b>판정은 규칙 코드, 설명은 LLM</b></div>
-        </div>
+      <div class="eyebrow in"><i>05</i>시장 분석 · 경쟁 구조</div>
+      <h2 class="in d1">MCP 표준의 정착과 <span class="grad">Gateway 기능 경쟁의 레드오션화</span></h2>
+      <div class="kpis k4">
+        <div class="kpi in d2"><b data-n="9700" data-sfx="만+">9,700만+</b><span>MCP SDK 월 다운로드<sup>1</sup></span></div>
+        <div class="kpi in d2"><b data-n="33" data-sfx="%">33%</b><span>2028년 Agentic AI 탑재 기업 SW<sup>2</sup></span></div>
+        <div class="kpi red in d3"><b data-n="40" data-sfx="%+">40%+</b><span>2027년까지 취소될 Agentic AI 과제<sup>2</sup></span><span class="why">원인: 리스크 통제 부족 · 비용 · 불분명한 가치</span></div>
+        <div class="riskc in d3"><span class="rh">리스크 통제의 네 축 <small>기존 Gateway가 이미 주는 것과 비어 있는 것</small></span><div class="rcs"><em class="has">감사 로그</em><em class="has">가드레일</em><em class="has">호출 관제</em><em class="gp">개인별 · 데이터 단위 권한</em></div><span class="rl"><i class="has"></i>제품이 제공 <i class="gp"></i>비어 있음 → 아래 ①</span></div>
+      </div>
+      <svg class="ocean in d4" id="oceanSvg" viewBox="0 0 1440 360" aria-label="세 갈래 경쟁사가 같은 기능으로 수렴하는 레드오션과 비어 있는 세 자리"></svg>
+      <div class="foot"><span>A2X 사업 제안</span><span class="srcs">출처 1. Anthropic(2025.12) · 2. Gartner(2025.6) · 3. Gartner Market Guide for AI Gateways(2025.10) · 4. MCP Authorization 사양, Cerbos 분석(2026)</span><span class="pc"></span></div><div class="prog"></div>
+    </div>
+  </section>
+
+  <!-- 3c. Advantage: strategy canvas + ERRC -->
+  <section class="slide" data-tab="경쟁우위" data-ch="6" data-hook="canvas">
+    <div class="card" style="--ac:#7d5cf5">
+      <div class="eyebrow in"><i>07</i>경쟁우위 · 가치 곡선과 모방 장벽</div>
+      <h2 class="in d1">아무도 주지 않는 가치와 <span class="grad">쉽게 따라올 수 없는 이유</span></h2>
+      <p class="sub in d2">10개 경쟁 요소로 본 가치 곡선, 그리고 세 빈자리(권한 · 운영 · 맞춤)를 채우는 방식과 모방 장벽</p>
+      <svg class="cvsvg in d3" id="canvasSvg" viewBox="0 0 1440 290" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="moats">
+        <div class="mt in d4" style="--mc:#2f6bff"><span class="mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg></span><div><em class="sn">빈자리 ① 권한</em><b>레거시 권한을 개인 단위로</b><p>시스템마다 다른 권한 체계를 연동해 내 권한 그대로</p><small>따라 하려면 → 시스템마다 권한 구조를 처음부터 분석</small></div></div>
+        <div class="mt in d5" style="--mc:#5e5ce6"><span class="mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect x="4" y="8" width="16" height="12" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg></span><div><em class="sn">빈자리 ② 운영</em><b>연계 업무는 Agent가 대행</b><p>신청 · 승인 · 오류 조치를 Agent가 처리하고 사람은 확인만</p><small>바꾸려면 → 승인 · ITSM 절차와 묶인 운영을 다시 짜야 함</small></div></div>
+        <div class="mt in d6" style="--mc:#7d5cf5"><span class="mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span><div><em class="sn">빈자리 ③ 맞춤</em><b>쌓인 연동 사례로 맞춤 흡수</b><p>고객사별 차이를 권한 정책 · 오류 분류 규칙으로 재사용</p><small>따라 하려면 → 같은 수의 고객과 시간이 필요</small></div></div>
+      </div>
+      <div class="foot"><span>A2X 사업 제안</span><span class="srcs">점수: 팀 자체 평가(0~10) · 비교군: Kong AI Gateway · Envoy AI Gateway · LiteLLM · agentgateway 등 '25~'26년 출시 AI/Agent Gateway의 평균적 제공 수준 · 분석 틀: ERRC(Blue Ocean Shift)</span><span class="pc"></span></div><div class="prog"></div>
+    </div>
+  </section>
+
+  <!-- Business model: delivery -->
+  <section class="slide" data-tab="제공 방식" data-ch="7">
+    <div class="card" style="--ac:#e8710a">
+      <div class="eyebrow in"><i>07</i>사업모델 · 제공 방식</div>
+      <h2 class="in d1">통제는 SaaS로, 데이터는 고객 환경에</h2>
+      <p class="sub in d2">엔터프라이즈 고객은 요청 · 응답 데이터가 외부를 거치는 것을 꺼립니다. 그래서 두 개의 plane으로 나눕니다.</p>
+      <div class="planes">
+        <div class="plane cp in d2 sheen"><div class="ring"></div><p class="k">CONTROL PLANE · SaaS</p><h3>관리와 지능</h3><p>등록 · 구독 거버넌스, 정책 관리, 모니터링, A2X Agent를 SaaS로 제공합니다. 여기에는 정책 · 메타데이터 · 호출 통계만 둡니다.</p><ul><li>웹 포탈</li><li>거버넌스</li><li>A2X Agent</li><li>모니터링</li></ul></div>
+        <div class="plane dp in d3 sheen"><div class="ring" style="animation-direction:reverse"></div><p class="k">DATA PLANE · 고객 환경</p><h3>호출과 집행</h3><p>Gateway와 권한 집행은 고객 환경에 두고, <b class="hl">고객사 레거시 플랫폼(인증 · 권한 체계 · 시스템 구성)에 맞춰 커스터마이징</b>합니다. 요청 · 응답 원문은 밖으로 나가지 않습니다.</p><ul><li>Gateway</li><li>API→MCP 변환</li><li>권한 집행</li><li>가드레일</li><li class="hl">레거시 맞춤 어댑터</li></ul></div>
+      </div>
+      <div class="slotmap">
+        <span class="smt in d4">세 빈자리를<br>채우는 위치</span>
+        <div class="sm in d4" style="--c:#2f6bff"><em>① 권한</em><b>정책은 SaaS · 집행은 고객 환경</b><span>개인별 권한 판정이 원문을 보지 않고 Gateway에서 실행</span></div>
+        <div class="sm in d5" style="--c:#5e5ce6"><em>② 운영</em><b>Agent가 SaaS에서 대행</b><span>신청 · 승인 · 오류 조치를 포탈 안에서 처리</span></div>
+        <div class="sm in d6" style="--c:#7d5cf5"><em>③ 맞춤</em><b>고객사 레거시에 맞춘 커스터마이징</b><span>고객 환경에 맞춤 어댑터로 적용, 사례는 SaaS에 쌓아 재사용</span></div>
       </div>
       <div class="foot"><span>A2X 사업 제안</span><span class="pc"></span></div><div class="prog"></div>
+    </div>
+  </section>
+
+  <!-- Business model: value & revenue -->
+  <section class="slide" data-hook="bm" data-tab="수익 구조">
+    <div class="card" style="--ac:#1e8e3e">
+      <div class="eyebrow in"><i>07</i>사업모델 · 수익 구조</div>
+      <h2 class="in d1">맞춤 구축은 입구, <span class="grad">구독은 본업</span></h2>
+      <p class="sub in d2">고객사 레거시 맞춤은 1회 프로젝트로 따로 받고, 그 위에 연결이 늘수록 쌓이는 두 겹의 구독</p>
+      <div class="rsrow">
+        <div class="rsg one"><span class="gl">1회 매출 · 프로젝트</span><div class="rs in d3" style="--sc:#f29900"><div class="rsh"><span class="si"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span><b>레거시 맞춤 구축</b><em>시스템마다</em></div><dl><dt>무엇</dt><dd>인증 · 권한 체계 분석, 맞춤 어댑터, 기존 Gateway 연동</dd><dt>과금 기준</dt><dd>연결 시스템별 연동 난이도</dd><dt>특성</dt><dd>사례 재사용으로 회차마다 원가 ↓</dd></dl></div></div>
+        <div class="rsarrow in d4"><svg viewBox="0 0 40 40"><path d="M6 20h24M22 11l9 9-9 9" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg><span>연결 후<br>구독 전환</span></div>
+        <div class="rsg rec"><span class="gl">반복 매출 · 구독</span><div class="rs in d4" style="--sc:#1e8e3e"><div class="rsh"><span class="si"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg></span><b>플랫폼 구독</b><em>연 단위</em></div><dl><dt>무엇</dt><dd>포탈 · 거버넌스 · 모니터링 · Agent 운영 대행(SaaS)</dd><dt>과금 기준</dt><dd>고객사 단위 · 사용자 규모 구간</dd><dt>특성</dt><dd>고객 수에 비례, 추가 원가 작음</dd></dl></div><div class="rs in d5" style="--sc:#2f6bff"><div class="rsh"><span class="si"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8Z"/></svg></span><b>연계 구독</b><em>종량</em></div><dl><dt>무엇</dt><dd>고객 환경에 연결된 시스템 · MCP 서버, 레거시 변경 대응</dd><dt>과금 기준</dt><dd>연결된 시스템 수</dd><dt>특성</dt><dd>한 고객 안에서 확장(Land &amp; Expand)</dd></dl></div></div>
+      </div>
+      <div class="revchart in d6"><svg id="revChart" viewBox="0 0 1440 300" aria-label="한 고객사의 시간에 따른 1회 매출과 반복 매출 개념도"></svg><span class="tagc">개념도 · 한 고객사 기준</span></div>
+      <div class="foot"><span>A2X 사업 제안</span><span class="srcs">개념도이며 수치가 아님 · 가격 수준은 1단계 사내 파일럿에서 검증</span><span class="pc"></span></div><div class="prog"></div>
     </div>
   </section>
 
   <!-- 8a. Big-picture architecture -->
-  <section class="slide" data-ch="3" data-hook="bigarch">
+  <section class="slide" data-tab="아키텍처" data-ch="3" data-hook="bigarch">
     <div class="card" style="--ac:#0f9d58">
-      <div class="eyebrow in"><i>03</i>아키텍처 · 큰 그림</div>
+      <div class="eyebrow in"><i>03</i>기술 전략 · 아키텍처</div>
       <h2 class="in d1">Agent에서 리소스까지, <span class="grad">두 개의 관문</span>을 거치는 구조</h2>
       <p class="sub in d2">모든 Agent 호출은 MCP 권한 Gateway와 MCP · API Gateway를 거쳐 MCP 서버와 사내 리소스에 닿습니다. 포탈이 정책을 내려보내고, A2X Agent가 신청과 조치를 대행합니다.</p>
       <div class="bigarch in d3"><svg id="bigSvg" viewBox="0 0 1440 500"></svg></div>
@@ -614,225 +1121,12 @@
     </div>
   </section>
 
-  <!-- 6b. Data plane detail (illustrated) -->
-  <section class="slide" data-ch="3" data-hook="dplane">
-    <div class="card" style="--ac:#0f9d58">
-      <div class="eyebrow in"><i>07</i>아키텍처 · Data plane 상세</div>
-      <h2 class="in d1"><span class="grad">A2X Gateway</span>의 기능과 구성</h2>
-      <p class="sub in d2">포탈이 등록 · 권한 · 배포 · 모니터링을 관장하고, 고객 환경의 Gateway가 권한 집행, 라우팅, MCP 서버 실행을 맡습니다.</p>
-      <div class="dpx in d3" id="dpx">
-        <svg id="dpSvg" viewBox="0 0 1440 450"></svg>
-        <div class="ab cpbar">
-          <div class="ico g-blue"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="15" rx="2.5"/><path d="M3 9h18M7 13h5M7 16h8"/></svg></div>
-          <div class="tt"><span class="dk">CONTROL PLANE · SaaS</span><b>A2X 포탈 · 전체 프로세스 관장</b></div>
-          <div class="chips"><span><i></i>등록 · 구독 프로세스</span><span><i></i>권한 정책 관리</span><span><i></i>MCP 서버 배포 관리</span><span><i></i>모니터링 · 감사</span><span><i></i>서버 마스터</span></div>
-        </div>
-        <span class="ab dk colk" style="left:28px;top:112px">AI AGENT</span>
-        <div class="ab caller" style="top:160px;height:96px"><div class="ico sm g-green"><svg viewBox="0 0 24 24"><rect x="5" y="8" width="14" height="11" rx="3"/><path d="M12 4v4"/><circle cx="12" cy="3.5" r="1"/><path d="M9.5 13h.01M14.5 13h.01" stroke-width="3"/></svg></div><div><b>업무 Agent</b><small>사내 업무 자동화</small></div></div>
-        <div class="ab caller" style="top:290px;height:96px"><div class="ico sm g-orange"><svg viewBox="0 0 24 24"><rect x="5" y="8" width="14" height="11" rx="3"/><path d="M12 4v4"/><circle cx="12" cy="3.5" r="1"/><path d="M9.5 13h.01M14.5 13h.01" stroke-width="3"/></svg></div><div><b>개인 Agent</b><small>직원이 만든 Agent</small></div></div>
-
-        <div class="ab chassis sheen">
-          <span class="dk">A2X GATEWAY · 고객 환경</span>
-          <div class="mod" style="left:18px;width:196px">
-            <div class="hd"><div class="ico g-pink"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg></div><div><b>권한 · 가드레일</b><small>호출마다 규칙 판정</small></div></div>
-            <div class="feat" style="--fc:#ff5c8a"><span>구독 확인</span><span>Tool · 파라미터 권한</span><span>데이터 레벨 권한</span><span>민감정보 검사 · 차단</span></div>
-          </div>
-          <span class="chev" style="left:216px">›</span>
-          <div class="mod" style="left:232px;width:196px">
-            <div class="hd"><div class="ico g-orange"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 9V5M12 15v4M9 12H5M15 12h4"/><circle cx="12" cy="3.5" r="1.5"/><circle cx="12" cy="20.5" r="1.5"/><circle cx="3.5" cy="12" r="1.5"/><circle cx="20.5" cy="12" r="1.5"/></svg></div><div><b>MCP / API Gateway</b><small>단일 진입점</small></div></div>
-            <div class="feat" style="--fc:#ffb340"><span>API · MCP 라우팅</span><span>토큰 인증</span><span>호출 한도</span><span>호출 로그 수집</span></div>
-          </div>
-          <span class="chev" style="left:430px">›</span>
-          <div class="mod" style="left:446px;width:398px">
-            <div class="hd"><div class="ico g-violet"><svg viewBox="0 0 24 24"><path d="M4 8h13l-3-3M20 16H7l3 3"/></svg></div><div><b>API → MCP 컨버터</b><small>등록된 API를 MCP 서버로 만들어 컨테이너로 실행</small></div></div>
-            <div class="pipe" id="dpPipe"><span>API 명세</span><em>→</em><span>MCP 서버 생성</span><em>→</em><span>컨테이너 배포</span></div>
-            <div class="clus"><span class="dk">MCP SERVER CONTAINERS</span>
-              <div class="cgrid" id="dpGrid"><div class="ctn"><svg viewBox="0 0 24 24"><path d="M4 7.5l8-4 8 4v9l-8 4-8-4z"/><path d="M4 7.5l8 4 8-4M12 11.5v9"/></svg><code>mcp-stock</code><i></i></div><div class="ctn"><svg viewBox="0 0 24 24"><path d="M4 7.5l8-4 8 4v9l-8 4-8-4z"/><path d="M4 7.5l8 4 8-4M12 11.5v9"/></svg><code>mcp-hr</code><i></i></div><div class="ctn"><svg viewBox="0 0 24 24"><path d="M4 7.5l8-4 8 4v9l-8 4-8-4z"/><path d="M4 7.5l8 4 8-4M12 11.5v9"/></svg><code>mcp-crm</code><i></i></div><div class="ctn"><svg viewBox="0 0 24 24"><path d="M4 7.5l8-4 8 4v9l-8 4-8-4z"/><path d="M4 7.5l8 4 8-4M12 11.5v9"/></svg><code>mcp-erp</code><i></i></div><div class="ctn"><svg viewBox="0 0 24 24"><path d="M4 7.5l8-4 8 4v9l-8 4-8-4z"/><path d="M4 7.5l8 4 8-4M12 11.5v9"/></svg><code>mcp-billing</code><i></i></div><div class="ctn slot">+ 새 MCP 서버</div></div>
-            </div>
-          </div>
-        </div>
-
-        <span class="ab dk colk" style="left:1144px;top:112px">TARGET SERVERS</span>
-        <div class="ab tgt" style="top:140px;height:120px"><div class="rack" style="--lc:#38bdf8"><i></i><i></i><i></i></div><div><b>API Server</b><small>사내 REST API<br>컨버터 또는 직접 호출</small></div></div>
-        <div class="ab tgt" style="top:290px;height:120px"><div class="rack" style="--lc:#bf5af2"><i></i><i></i><i></i></div><div><b>MCP Server</b><small>사내 · 외부 MCP 서버<br>등록 후 Gateway 경유</small></div></div>
-      </div>
-      <div class="foot"><span>A2X 사업 제안</span><span class="pc"></span></div><div class="prog"></div>
-    </div>
-  </section>
-
-  <!-- 6. Architecture detail + service flow -->
-  <section class="slide" data-ch="3" data-hook="detail" id="flowSlide">
-    <div class="card" style="--ac:#0f9d58">
-      <div class="flowhead">
-        <div>
-          <div class="eyebrow in"><i>06</i>아키텍처 · 상세 구조와 서비스 흐름</div>
-          <h2 class="in d1">전체 구조와 서비스 동작 흐름</h2>
-          <p class="sub in d2">시나리오를 누르면 흐름이 재생됩니다. 노드에 마우스를 올리면 연결이 강조됩니다.</p>
-        </div>
-        <div class="in d2">
-          <div class="scen" id="scen"></div>
-          <div class="caption" id="caption"></div>
-        </div>
-      </div>
-      <div class="canvas dcanvas in d3" id="detailCanvas"><svg class="edges" id="detailEdges" viewBox="0 0 1440 498"></svg></div>
-      <div class="foot"><span>A2X 사업 제안</span><span class="pc"></span></div><div class="prog"></div>
-    </div>
-  </section>
-
-  <!-- 7. Agent overview -->
-  <section class="slide" data-ch="5" data-hook="agentov">
-    <div class="card" style="--ac:#a142f4">
-      <div class="eyebrow in"><i>07</i>A2X Agent · 개요</div>
-      <h2 class="in d1">연계 업무를 대신 처리하는 <span class="grad">세 개의 sub-agent</span></h2>
-      <p class="sub in d2">Supervisor가 요청을 규칙(Python 코드)으로 분류해 알맞은 sub-agent에 넘깁니다. 신청서는 Agent가 쓰고, 제출과 결정은 사람이 합니다.</p>
-      <div class="sovsup in d2 sheen">
-        <em class="t-green">라우터</em>
-        <div><b>Supervisor</b><span>LLM 판단 없이 규칙 코드로 라우팅 · 결과는 Supervisor를 거쳐 포탈로 응답</span></div>
-        <div class="rt"><code>문의</code>→ 컨설팅 <code>신청</code>→ 자동화 <code>오류</code>→ 오류조치</div>
-      </div>
-      <div class="sovgrid">
-        <div class="sag in d3" data-jump="exConsult">
-          <div class="hd"><i>1</i><div><h3>컨설팅 Agent</h3><small>연계 방식 제안</small></div></div>
-          <div class="q">“주문 재고를 AI Agent에서 쓰려면 어떻게 연계하나요?”</div>
-          <dl><dt>근거</dt><dd>admin이 등록한 사내 문서 (RAG · ChromaDB)</dd><dt>결과</dt><dd>출처를 밝힌 연계 방식 제안, 근거가 없으면 모른다고 답변</dd></dl>
-          <span class="go">예시 보기 →</span>
-        </div>
-        <div class="sag in d4" data-jump="exAuto">
-          <div class="hd"><i>2</i><div><h3>프로세스 자동화 Agent</h3><small>등록 · 구독 신청 절차 대행</small></div></div>
-          <div class="q">“재고 조회 API를 MCP로 구독 신청해 주세요.”</div>
-          <dl><dt>도구</dt><dd>외부 마스터 조회 (MCP Tool)</dd><dt>결과</dt><dd>신청서 자동 작성 → 사람이 확인 후 제출 → 검사 · 승인 · 배포 진행</dd></dl>
-          <span class="go">예시 보기 →</span>
-        </div>
-        <div class="sag in d5" data-jump="exErr">
-          <div class="hd"><i>3</i><div><h3>오류조치 Agent</h3><small>원인 분석과 조치 안내</small></div></div>
-          <div class="q">“주문 API 오류가 갑자기 늘었어요. 원인이 뭔가요?”</div>
-          <dl><dt>근거</dt><dd>모니터링 호출 로그 · 지표, 규칙 코드로 오류 분류</dd><dt>결과</dt><dd>원인과 조치 방법 안내, 조치 실행은 사람이 결정</dd></dl>
-          <span class="go">예시 보기 →</span>
-        </div>
-      </div>
-      <div class="sovfoot in d6">
-        <div><em class="t-violet">확장</em>개발 지원(연계 코드 · 설정 예시) 등 새 업무는 sub-agent를 추가해 넓힙니다.</div>
-        <div><em class="t-orange">LLM</em>모든 sub-agent는 Claude API를 쓰며, 장애 시 다른 모델로 전환합니다.</div>
-      </div>
-      <div class="foot"><span>A2X 사업 제안</span><span class="pc"></span></div><div class="prog"></div>
-    </div>
-  </section>
-
-  <!-- 7a. Example: consulting -->
-  <section class="slide" data-ch="5" data-hook="exConsult">
-    <div class="card" style="--ac:#a142f4">
-      <div class="eyebrow in"><i>08</i>A2X Agent · 예시 ① 컨설팅 Agent</div>
-      <h2 class="in d1">사내 문서 근거의 <span class="grad">연계 방식 제안</span></h2>
-      <p class="sub in d2">답변은 admin이 등록한 문서에서만 찾습니다. 근거가 없으면 지어내지 않고 모른다고 답합니다.</p>
-      <div class="exgrid">
-        <div>
-          <ol class="exs in d2" id="cSteps">
-            <li><i>1</i><div><b>질문 접수와 라우팅</b><span>포탈이 Supervisor에 전달하고, 규칙으로 컨설팅 Agent를 선택</span></div></li>
-            <li><i>2</i><div><b>사내 문서 검색 (RAG)</b><span>연계 가이드 · 정책 문서를 ChromaDB에서 찾음</span></div></li>
-            <li><i>3</i><div><b>근거 기반 제안</b><span>찾은 문서만 근거로 연계 방식을 제안하고 출처를 표시</span></div></li>
-            <li><i>4</i><div><b>근거가 없으면 모른다고 답변</b><span>추측하지 않고 문의처를 안내</span></div></li>
-          </ol>
-          <div class="exnote in d3"><b>사람의 역할</b>제안을 참고해 연계 방식을 정하고, 다음 단계(신청)를 시작합니다.</div>
-        </div>
-        <div class="device exdev in d3" id="cDev">
-          <div class="bar"><i></i><i></i><i></i><b>A2X 포탈 · 컨설팅</b><button class="rp" type="button">다시 재생 ↻</button></div>
-          <div class="cb u" data-t="주문 시스템의 재고 조회를 AI Agent에서 쓰고 싶어요. 어떻게 연계하나요?"></div>
-          <div class="rag fx"><b>검색된 문서</b><span>MCP 연계 가이드<i>0.91</i></span><span>API→MCP 변환 정책<i>0.87</i></span><span>보안 점검 기준<i>0.82</i></span></div>
-          <div class="cb a" data-t="읽기 전용 조회 API라서 API→MCP 변환 방식을 권장합니다. 변환 후 Tool 단위 권한으로 호출 범위를 제한할 수 있고, 등록 시 보안 정적 검사를 거칩니다."></div>
-          <div class="srcl fx">출처 · MCP 연계 가이드 3.2절 · API→MCP 변환 정책 1.1절</div>
-          <div class="cb u" data-t="다음 분기 API 사용료 정책도 알려 주세요."></div>
-          <div class="cb a dim" data-t="등록된 문서에서 근거를 찾지 못했습니다. 플랫폼 운영팀에 문의해 주세요."></div>
-          <p class="note">화면의 질문과 문서는 예시입니다</p>
-        </div>
-      </div>
-      <div class="foot"><span>A2X 사업 제안</span><span class="pc"></span></div><div class="prog"></div>
-    </div>
-  </section>
-
-  <!-- 7b. Example: process automation -->
-  <section class="slide" data-ch="5" data-hook="exAuto">
-    <div class="card" style="--ac:#a142f4">
-      <div class="eyebrow in"><i>09</i>A2X Agent · 예시 ② 프로세스 자동화 Agent</div>
-      <h2 class="in d1">신청서 작성은 Agent가, <span class="grad">최종 결정은 사람이</span></h2>
-      <p class="sub in d2">외부 마스터를 MCP Tool로 읽어 등록 · 구독 신청서를 채우고, 제출 이후의 절차도 포탈에서 이어집니다.</p>
-      <div class="exgrid">
-        <div>
-          <ol class="exs in d2" id="aSteps">
-            <li><i>1</i><div><b>요청 이해 · 마스터 조회</b><span>시스템 · API · 조직 마스터를 MCP Tool로 읽음</span></div><em class="who t-violet">Agent</em></li>
-            <li><i>2</i><div><b>신청서 입력란 자동 채움</b><span>값마다 가져온 출처(마스터 · 컨설팅)를 표시</span></div><em class="who t-violet">Agent</em></li>
-            <li><i>3</i><div><b>확인 후 제출</b><span>Agent는 스스로 제출하지 않음</span></div><em class="who t-blue">사람</em></li>
-            <li><i>4</i><div><b>보안 정적 검사 · 승인 · 방화벽 요청</b><span>기업의 승인 절차를 그대로 따름</span></div><em class="who t-green">포탈</em></li>
-            <li><i>5</i><div><b>구독 완료 · 정책 배포</b><span>승인된 권한이 Gateway에 배포됨</span></div><em class="who t-green">포탈</em></li>
-          </ol>
-        </div>
-        <div class="device exdev in d3" id="demo">
-          <div class="bar"><i></i><i></i><i></i><b>A2X 포탈 · 구독 신청</b><button class="rp" type="button" id="replay">다시 재생 ↻</button></div>
-          <div class="cb u" data-t="주문 시스템의 재고 조회 API를 MCP로 구독 신청해 주세요."></div>
-          <div class="cb a" data-t="마스터에서 정보를 가져와 신청서를 채웠어요. 확인 후 제출해 주세요."></div>
-          <div class="field"><label>시스템</label><div class="box" data-v="주문관리시스템 (ORD)"><span class="txt"></span><span class="src">시스템 마스터</span></div></div>
-          <div class="field"><label>대상 API</label><div class="box" data-v="GET /inventory/{sku}"><span class="txt"></span><span class="src">API 마스터</span></div></div>
-          <div class="field"><label>연계 방식</label><div class="box" data-v="MCP Tool (API→MCP 변환)"><span class="txt"></span><span class="src">컨설팅</span></div></div>
-          <div class="field"><label>담당자</label><div class="box" data-v="플랫폼팀 · 운영 담당"><span class="txt"></span><span class="src">조직 마스터</span></div></div>
-          <button class="submit" type="button" id="aSubmit">확인 후 제출</button>
-          <p class="note" id="aNote">Agent는 스스로 제출하지 않습니다 · 화면의 값은 예시입니다</p>
-        </div>
-      </div>
-      <div class="foot"><span>A2X 사업 제안</span><span class="pc"></span></div><div class="prog"></div>
-    </div>
-  </section>
-
-  <!-- 7c. Example: error handling -->
-  <section class="slide" data-ch="5" data-hook="exErr">
-    <div class="card" style="--ac:#a142f4">
-      <div class="eyebrow in"><i>10</i>A2X Agent · 예시 ③ 오류조치 Agent</div>
-      <h2 class="in d1">규칙 기반 <span class="grad">오류 분류</span>와 조치 안내</h2>
-      <p class="sub in d2">원인 분류는 규칙 코드가 하고, LLM은 분류 결과를 사람이 읽기 쉬운 설명과 조치 방법으로 정리합니다.</p>
-      <div class="exgrid">
-        <div>
-          <ol class="exs in d2" id="eSteps">
-            <li><i>1</i><div><b>이상 감지</b><span>호출 로그의 오류율이 임계치를 넘으면 이벤트 발생</span></div><em class="who t-orange">모니터링</em></li>
-            <li><i>2</i><div><b>규칙으로 원인 분류</b><span>상태 코드와 지표 패턴을 규칙 표와 대조</span></div><em class="who t-gray">규칙 코드</em></li>
-            <li><i>3</i><div><b>원인 · 조치 안내</b><span>분류 결과를 근거로 설명과 조치 방법을 정리</span></div><em class="who t-violet">LLM</em></li>
-          </ol>
-          <div class="rules in d3" id="eRules">
-            <h6>분류 규칙 (예시)</h6>
-            <div class="rr"><code>401 · 403</code><span>권한 · 구독 문제</span><span>구독 · 권한 확인</span></div>
-            <div class="rr"><code>429</code><span>호출 한도 초과</span><span>한도 조정 요청</span></div>
-            <div class="rr"><code>5xx 급증</code><span>대상 시스템 장애</span><span>담당자 확인 요청</span></div>
-            <div class="rr"><code>timeout</code><span>네트워크 · 방화벽</span><span>방화벽 요청 확인</span></div>
-          </div>
-        </div>
-        <div class="device exdev in d3" id="eDev">
-          <div class="bar"><i></i><i></i><i></i><b>A2X 포탈 · 모니터링</b><button class="rp" type="button">다시 재생 ↻</button></div>
-          <div class="chart">
-            <h6>주문 API · 오류율 (최근 30분)</h6>
-            <svg viewBox="0 0 560 112" preserveAspectRatio="none">
-              <line x1="0" y1="66" x2="560" y2="66" stroke="#ff9f0a" stroke-width="1.5" stroke-dasharray="5 5"/>
-              <text x="4" y="60" font-size="11" fill="#c77700" font-family="sans-serif">임계치 10%</text>
-              <path id="eLine" d="M0,98 L40,96 L80,99 L120,95 L160,97 L200,94 L240,96 L280,93 L320,74 L360,40 L400,24 L440,20 L480,23 L520,18 L560,21" fill="none" stroke="#ff3b30" stroke-width="3" stroke-linejoin="round"/>
-            </svg>
-            <span class="al fx">오류율 38% · 임계치 초과</span>
-          </div>
-          <div class="cb u" data-t="주문 API 오류가 갑자기 늘었어요. 원인이 뭔가요?"></div>
-          <div class="clsr fx"><em>규칙 분류</em>5xx 급증 → 대상 시스템 장애 (주문 시스템 응답 지연)</div>
-          <div class="cb a" data-t="최근 10분간 /orders 조회에서 5xx 응답이 급증했습니다. 권한이나 한도 문제가 아니라 주문 시스템의 응답 지연으로 분류됩니다."></div>
-          <ol class="acts">
-            <li class="fx"><i>조치 1</i>주문 시스템 담당자에게 확인 요청</li>
-            <li class="fx"><i>조치 2</i>복구 전까지 호출 한도 임시 하향 검토</li>
-          </ol>
-          <p class="note">조치 실행은 사람이 결정합니다 · 화면의 값은 예시입니다</p>
-        </div>
-      </div>
-      <div class="foot"><span>A2X 사업 제안</span><span class="pc"></span></div><div class="prog"></div>
-    </div>
-  </section>
-
   <!-- 8c. Differentiation: 5 strengths -->
-  <section class="slide" data-ch="6" data-hook="edge">
+  <section class="slide" data-tab="기술 역량" data-ch="6" data-hook="edge">
     <div class="card" style="--ac:#ff375f">
-      <div class="eyebrow in"><i>06</i>차별화 · 핵심 경쟁력</div>
-      <h2 class="in d1">A2X의 5가지 핵심 경쟁력</h2>
-      <p class="sub in d2">범용 Gateway 기능으로 경쟁하지 않고, 다른 AI Gateway가 다루지 않는 다섯 영역에 집중합니다.</p>
+      <div class="eyebrow in"><i>06</i>기술 전략 · 기술 역량</div>
+      <h2 class="in d1">경쟁우위를 만드는 <span class="grad">다섯 가지 기술 역량</span></h2>
+      <p class="sub in d2">세 빈자리(권한 · 운영 · 맞춤)를 실제로 채우는 기술입니다. 엔진은 채택하고, 이 다섯 영역에 개발을 집중합니다.</p>
       <div class="edges5">
         <div class="ec in d2">
           <div class="ev" id="evPerm">
@@ -879,46 +1173,335 @@
     </div>
   </section>
 
-  <!-- 9. Business model -->
-  <section class="slide" data-ch="7">
-    <div class="card" style="--ac:#e8710a">
-      <div class="eyebrow in"><i>07</i>사업 모델</div>
-      <h2 class="in d1">통제는 SaaS로, 데이터는 고객 환경에</h2>
-      <p class="sub in d2">엔터프라이즈 고객은 요청 · 응답 데이터가 외부를 거치는 것을 꺼립니다. 그래서 두 개의 plane으로 나눕니다.</p>
-      <div class="planes">
-        <div class="plane cp in d2 sheen"><div class="ring"></div><p class="k">CONTROL PLANE · SaaS</p><h3>관리와 지능</h3><p>등록 · 구독 거버넌스, 정책 관리, 모니터링, A2X Agent를 SaaS로 제공합니다.</p><ul><li>웹 포탈</li><li>거버넌스</li><li>A2X Agent</li><li>모니터링</li></ul></div>
-        <div class="plane dp in d3 sheen"><div class="ring" style="animation-direction:reverse"></div><p class="k">DATA PLANE · 고객 환경</p><h3>호출과 집행</h3><p>실제 호출이 지나가는 Gateway와 권한 · 가드레일 집행은 고객 환경에 설치합니다. 기존 Gateway 위에도 얹을 수 있습니다.</p><ul><li>Gateway</li><li>API→MCP 변환</li><li>권한 집행</li><li>가드레일</li></ul></div>
+  <!-- 7. Agent overview -->
+  <section class="slide" data-hook="agentov" data-tab="AI의 역할">
+    <div class="card" style="--ac:#a142f4">
+      <div class="eyebrow in"><i>07</i>기술 전략 · AI의 역할</div>
+      <h2 class="in d1">연계 업무를 대신 처리하는 <span class="grad">세 개의 sub-agent</span></h2>
+      <p class="sub in d2">빈자리 ② 운영의 답. Supervisor가 요청을 규칙 코드로 분류해 알맞은 sub-agent에 넘깁니다. 신청서는 Agent가 쓰고, 제출과 결정은 사람이 합니다.</p>
+      <div class="sovsup in d2 sheen">
+        <em class="t-green">라우터</em>
+        <div><b>Supervisor</b><span>LLM 판단 없이 규칙 코드로 라우팅 · 결과는 Supervisor를 거쳐 포탈로 응답</span></div>
+        <div class="rt"><code>문의</code>→ 컨설팅 <code>신청</code>→ 자동화 <code>오류</code>→ 오류조치</div>
+      </div>
+      <div class="sovgrid">
+        <div class="sag in d3" data-jump="exConsult">
+          <div class="hd"><i>1</i><div><h3>컨설팅 Agent</h3><small>연계 방식 제안</small></div></div>
+          <div class="q">“주문 재고를 AI Agent에서 쓰려면 어떻게 연계하나요?”</div>
+          <dl><dt>근거</dt><dd>admin이 등록한 사내 문서 (RAG · ChromaDB)</dd><dt>결과</dt><dd>출처를 밝힌 연계 방식 제안, 근거가 없으면 모른다고 답변</dd></dl>
+          <span class="go">예시 보기 →</span>
+        </div>
+        <div class="sag in d4" data-jump="exAuto">
+          <div class="hd"><i>2</i><div><h3>프로세스 자동화 Agent</h3><small>등록 · 구독 신청 절차 대행</small></div></div>
+          <div class="q">“재고 조회 API를 MCP로 구독 신청해 주세요.”</div>
+          <dl><dt>도구</dt><dd>외부 마스터 조회 (MCP Tool)</dd><dt>결과</dt><dd>신청서 자동 작성 → 사람이 확인 후 제출 → 검사 · 승인 · 배포 진행</dd></dl>
+          <span class="go">예시 보기 →</span>
+        </div>
+        <div class="sag in d5" data-jump="exErr">
+          <div class="hd"><i>3</i><div><h3>오류조치 Agent</h3><small>원인 분석과 조치 안내</small></div></div>
+          <div class="q">“주문 API 오류가 갑자기 늘었어요. 원인이 뭔가요?”</div>
+          <dl><dt>근거</dt><dd>모니터링 호출 로그 · 지표, 규칙 코드로 오류 분류</dd><dt>결과</dt><dd>원인과 조치 방법 안내, 조치 실행은 사람이 결정</dd></dl>
+          <span class="go">예시 보기 →</span>
+        </div>
+      </div>
+      <div class="sovfoot in d6">
+        <div><em class="t-violet">확장</em>개발 지원(연계 코드 · 설정 예시) 등 새 업무는 sub-agent를 추가해 넓힙니다.</div>
+        <div><em class="t-orange">LLM</em>모든 sub-agent는 Claude API를 쓰며, 장애 시 다른 모델로 전환합니다.</div>
       </div>
       <div class="foot"><span>A2X 사업 제안</span><span class="pc"></span></div><div class="prog"></div>
+    </div>
+  </section>
+
+  <!-- Execution: entry & expansion -->
+  <section class="slide" data-hook="exec" data-tab="진입 · 확장">
+    <div class="card" style="--ac:#0a9396">
+      <div class="eyebrow in"><i>14</i>실행 전략 · 진입과 확장</div>
+      <h2 class="in d1">사내 표준 선점 후 <span class="grad">비고객 계층으로의 확장</span></h2>
+      <p class="sub in d2">1차 MVP는 이미 동작. 한 계단 오를 때마다 다음 비고객 계층의 진입 장벽을 하나씩 제거</p>
+      <div class="stairs">
+        <div class="xst" style="--c:#1e8e3e;--h:130px"><div class="xtg in d3"><span class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/></svg></span><div><small>1계층</small><b>사내 레거시 · 부서별 Gateway 검토 조직</b></div></div><div class="blk" style="transition-delay:0.35s"><span class="here"><i></i>지금 여기</span><span class="pn">1차</span><h4>사내 파일럿 · 표준 선점</h4><em class="bc">MVP 완료 · 시연 가능</em><div class="fills"><small>채우는 것</small><em>② 운영</em></div><span class="wm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/></svg></span></div></div>
+        <div class="xst" style="--c:#7d5cf5;--h:195px"><div class="xtg in d4"><span class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg></span><div><small>2계층</small><b>권한 통제 때문에 데이터 개방을 거부한 시스템</b></div></div><div class="blk" style="transition-delay:0.55s"><span class="pn">2차</span><h4>권한 연동 확산</h4><em class="bc">창출 요소 완성</em><div class="fills"><small>채우는 것</small><em>① 권한</em><em>③ 맞춤</em></div><span class="wm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></svg></span></div></div>
+        <div class="xst" style="--c:#f29900;--h:260px"><div class="xtg in d5"><span class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg></span><div><small>3계층</small><b>관계사 · 대외 파트너, 거버넌스 없이 Agent를 쓰는 조직</b></div></div><div class="blk" style="transition-delay:0.75s"><span class="pn">3차</span><h4>대외 확장 · 구독 상품화</h4><em class="bc">반복 매출</em><div class="fills"><small>채우는 것</small><em>구독 상품화</em></div><span class="wm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg></span></div></div>
+      </div>
+      <div class="stdet">
+        <div class="sd in d4" style="--c:#1e8e3e"><dl><dt>제공</dt><dd><em>포탈</em><em>2단계 구독</em><em>API→MCP 변환</em><em>Agent</em></dd><dt>지표</dt><dd><em>연결 시스템 수</em><em>신청→사용 리드타임</em><em>우회 구축 건수</em></dd></dl></div>
+        <div class="sd in d5" style="--c:#7d5cf5"><dl><dt>제공</dt><dd><em>데이터 단위 권한</em><em>레거시 권한 연동</em><em>맞춤 어댑터</em></dd><dt>지표</dt><dd><em>데이터 개방 시스템 수</em><em>연동 사례 수</em><em>온보딩 원가</em></dd></dl></div>
+        <div class="sd in d6" style="--c:#f29900"><dl><dt>제공</dt><dd><em>SaaS + 고객 환경</em><em>맞춤 구축 + 구독</em></dd><dt>지표</dt><dd><em>외부 고객사 수</em><em>반복 매출 비중</em><em>해지율</em></dd></dl></div>
+      </div>
+      <div class="foot"><span>A2X 사업 제안</span><span class="srcs">계층 구분: 3번 비고객 지도 · 빈자리 ①②③: 6번 시장 분석</span><span class="pc"></span></div><div class="prog"></div>
     </div>
   </section>
 
   <!-- 10. Risks -->
-  <section class="slide" data-ch="7">
+  <section class="slide" data-tab="위험 대응" data-ch="7">
     <div class="card" style="--ac:#e8710a">
-      <div class="eyebrow in"><i>07</i>사업 모델 · 위험과 대응</div>
-      <h2 class="in d1">범용 Gateway와 경쟁하지 않는 전략</h2>
-      <div style="margin-top:26px">
-        <div class="risk in d1"><div class="q">클라우드 · 게이트웨이 업체의 기능 끼워 넣기</div><div class="a">Tool · 파라미터 · 데이터 레벨 권한, 기업 업무 흐름에 맞춘 거버넌스, AI 신청 대행, 국내 규제 대응에 집중합니다.</div></div>
-        <div class="risk in d2"><div class="q">엔터프라이즈 고객의 SaaS 기피</div><div class="a">Control plane과 Data plane을 분리해, 데이터가 지나가는 부분은 고객 환경에 둡니다.</div></div>
-        <div class="risk in d3"><div class="q">MCP · A2A 사양 변경</div><div class="a">프로토콜 처리를 Gateway 계층에 모아 변화를 흡수합니다. 그 자체가 고객이 얻는 가치가 됩니다.</div></div>
-        <div class="risk in d4"><div class="q">신규 프로토콜 · 벤더 종속</div><div class="a">Gateway 계층을 추상화해 WSO2 외의 Gateway로도 교체할 수 있게 합니다.</div></div>
+      <div class="eyebrow in"><i>07</i>실행 전략 · 위험과 대응</div>
+      <h2 class="in d1">주요 위험과 <span class="grad">대응 전략</span></h2>
+      <div class="rkgrid">
+        <div class="rk in d3"><div class="rq"><span class="ri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg></span><b>대형 클라우드 · Gateway 업체의 기능 끼워 넣기</b></div><div class="rarrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg></div><div class="ra"><span class="rsh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></span><div><b>엔진 경쟁은 하지 않음</b><p>엔진은 채택하고, 제품이 비워 둔 권한 · 운영 · 맞춤에 집중</p></div></div><span class="ref">→ 6 · 7 경쟁 구조</span></div>
+        <div class="rk in d4"><div class="rq"><span class="ri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><path d="M6 6h.01"/><path d="M6 18h.01"/></svg></span><b>엔터프라이즈 고객의 SaaS 기피</b></div><div class="rarrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg></div><div class="ra"><span class="rsh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></span><div><b>원문은 고객 환경에</b><p>SaaS에는 정책 · 메타데이터 · 호출 통계만, 호출과 집행은 고객 환경</p></div></div><span class="ref">→ 8 제공 방식</span></div>
+        <div class="rk in d5"><div class="rq"><span class="ri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.82 2.82"/></svg></span><b>맞춤 구축의 SI화 · 수익성 악화</b></div><div class="rarrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg></div><div class="ra"><span class="rsh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></span><div><b>사례 재사용과 구독 전환</b><p>맞춤을 권한 정책 · 오류 규칙으로 재사용, 연결 후 구독으로 전환</p></div></div><span class="ref">→ 9 수익 구조</span></div>
+        <div class="rk in d5"><div class="rq"><span class="ri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg></span><b>MCP · A2A 사양 변경</b></div><div class="rarrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg></div><div class="ra"><span class="rsh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></span><div><b>변화를 Gateway에서 흡수</b><p>프로토콜 처리를 한 계층에 모아, 변화 대응 자체를 구독 가치로</p></div></div><span class="ref">→ 10 아키텍처</span></div>
+        <div class="rk in d6"><div class="rq"><span class="ri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span><b>특정 Gateway 벤더 종속</b></div><div class="rarrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg></div><div class="ra"><span class="rsh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></span><div><b>Gateway 계층 추상화</b><p>WSO2 외 다른 Gateway로 교체 가능하게 설계</p></div></div><span class="ref">→ 10 아키텍처</span></div>
+        <div class="rk in d7"><div class="rq"><span class="ri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect x="4" y="8" width="16" height="12" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg></span><b>Agent의 잘못된 판단</b></div><div class="rarrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg></div><div class="ra"><span class="rsh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></span><div><b>판정은 규칙, 결정은 사람</b><p>판정은 규칙 코드, 설명만 LLM. 제출 · 조치 실행은 사람이 결정</p></div></div><span class="ref">→ 12 AI의 역할</span></div>
+      </div>
+      <div class="rklg in d6"><span><i class="r"></i>위험</span><span><i class="b"></i>대응</span><span class="t">→ 근거가 되는 본문 페이지</span></div>
+      <div class="foot"><span>A2X 사업 제안</span><span class="pc"></span></div><div class="prog"></div>
+    </div>
+  </section>
+
+  <!-- Summary: six questions -->
+  <section class="slide" data-hook="summary" data-tab="한 장 요약">
+    <div class="card" style="--ac:#2f6bff">
+      <div class="eyebrow in"><i>16</i>요약 · 여섯 가지 질문에 대한 답</div>
+      <h2 class="in d1">A2X <span class="grad">한 장 요약</span></h2>
+      <div class="sumhero in d2">
+        <div class="shl"><small>A2X가 고객에게 주는 것</small><b>내 권한만큼, 사내 데이터를 <span class="grad">Claude에서 바로</span></b><p>개인별 권한 · Agent 운영 대행 · 고객사 맞춤을 묶은 AI 연계 운영 구독</p></div>
+        <div class="shr"><span style="--c:#2f6bff"><i>①</i>권한</span><span style="--c:#5e5ce6"><i>②</i>운영</span><span style="--c:#7d5cf5"><i>③</i>맞춤</span></div>
+      </div>
+      <div class="sumtl">
+        <div class="sx" style="--c:#f29900;--i:0"><span class="sxn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg></span><div class="sxc"><span class="sxs"><i>1</i>기회 발견</span><b>볼 권한은 있는데, 꺼내 오기가 일</b><p>화면 조작은 느리고 불안정, 통째 연결은 남의 데이터까지</p><small>→ 2 · 3</small></div></div>
+        <div class="sx" style="--c:#e5372b;--i:1"><span class="sxn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12c.552 0 1.005-.449.95-.998a10 10 0 0 0-8.953-8.951c-.55-.055-.998.398-.998.95v8a1 1 0 0 0 1 1z"/><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/></svg></span><div class="sxc"><span class="sxs"><i>2</i>시장 분석</span><b>Gateway 기능은 레드오션</b><p>MCP는 표준으로 정착, 비어 있는 세 자리는 권한 · 운영 · 맞춤</p><small>→ 4 · 5 · 6</small></div></div>
+        <div class="sx" style="--c:#7d5cf5;--i:2"><span class="sxn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></span><div class="sxc"><span class="sxs"><i>3</i>경쟁우위</span><b>세 빈자리를 채우는 가치 곡선</b><p>현장 지식 · 쌓이는 사례 · 절차와 묶인 전환 비용이 모방 장벽</p><small>→ 7</small></div></div>
+        <div class="sx" style="--c:#1e8e3e;--i:3"><span class="sxn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.82 2.82"/></svg></span><div class="sxc"><span class="sxs"><i>4</i>사업모델</span><b>맞춤 구축은 입구, 구독은 본업</b><p>통제는 SaaS, 데이터는 고객 환경. 연결이 늘수록 반복 매출</p><small>→ 8 · 9</small></div></div>
+        <div class="sx" style="--c:#2f6bff;--i:4"><span class="sxn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect x="4" y="8" width="16" height="12" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg></span><div class="sxc"><span class="sxs"><i>5</i>기술 전략</span><b>엔진은 채택, 권한 · 운영에 집중</b><p>판정은 규칙 코드, 반복 연계 업무는 세 Agent가 대행</p><small>→ 10 · 11 · 12</small></div></div>
+        <div class="sx" style="--c:#0a9396;--i:5"><span class="sxn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><path d="M4 22v-7"/></svg></span><div class="sxc"><span class="sxs"><i>6</i>실행 전략</span><b>사내 → 권한 확산 → 대외</b><p>1차 MVP 동작 중, 단계마다 비고객 한 계층씩 고객으로</p><small>→ 13 · 14</small></div></div>
+      </div>
+      <div class="foot"><span>A2X 사업 제안</span><span class="srcs">→ 숫자는 근거가 되는 본문 페이지</span><span class="pc"></span></div><div class="prog"></div>
+    </div>
+  </section>
+
+  <!-- 6b. Data plane detail (illustrated) -->
+  <section class="slide" data-appx data-ch="3" data-hook="dplane">
+    <div class="card" style="--ac:#0f9d58">
+      <div class="eyebrow in"><i>07</i>부록 · 아키텍처 · Data plane 상세</div>
+      <h2 class="in d1"><span class="grad">A2X Gateway</span>의 기능과 구성</h2>
+      <p class="sub in d2">포탈이 등록 · 권한 · 배포 · 모니터링을 관장하고, 고객 환경의 Gateway가 권한 집행, 라우팅, MCP 서버 실행을 맡습니다.</p>
+      <div class="dpx in d3" id="dpx">
+        <svg id="dpSvg" viewBox="0 0 1440 450"></svg>
+        <div class="ab cpbar">
+          <div class="ico g-blue"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="15" rx="2.5"/><path d="M3 9h18M7 13h5M7 16h8"/></svg></div>
+          <div class="tt"><span class="dk">CONTROL PLANE · SaaS</span><b>A2X 포탈 · 전체 프로세스 관장</b></div>
+          <div class="chips"><span><i></i>등록 · 구독 프로세스</span><span><i></i>권한 정책 관리</span><span><i></i>MCP 서버 배포 관리</span><span><i></i>모니터링 · 감사</span><span><i></i>서버 마스터</span></div>
+        </div>
+        <span class="ab dk colk" style="left:28px;top:112px">AI AGENT</span>
+        <div class="ab caller" style="top:160px;height:96px"><div class="ico sm g-green"><svg viewBox="0 0 24 24"><rect x="5" y="8" width="14" height="11" rx="3"/><path d="M12 4v4"/><circle cx="12" cy="3.5" r="1"/><path d="M9.5 13h.01M14.5 13h.01" stroke-width="3"/></svg></div><div><b>업무 Agent</b><small>사내 업무 자동화</small></div></div>
+        <div class="ab caller" style="top:290px;height:96px"><div class="ico sm g-orange"><svg viewBox="0 0 24 24"><rect x="5" y="8" width="14" height="11" rx="3"/><path d="M12 4v4"/><circle cx="12" cy="3.5" r="1"/><path d="M9.5 13h.01M14.5 13h.01" stroke-width="3"/></svg></div><div><b>개인 Agent</b><small>직원이 만든 Agent</small></div></div>
+
+        <div class="ab chassis sheen">
+          <span class="dk">A2X GATEWAY · 고객 환경</span>
+          <div class="mod" style="left:18px;width:196px">
+            <div class="hd"><div class="ico g-pink"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg></div><div><b>권한 · 가드레일</b><small>호출마다 규칙 판정</small></div></div>
+            <div class="feat" style="--fc:#ff5c8a"><span>구독 확인</span><span>Tool · 파라미터 권한</span><span>데이터 레벨 권한</span><span>민감정보 검사 · 차단</span></div>
+          </div>
+          <span class="chev" style="left:216px">›</span>
+          <div class="mod" style="left:232px;width:196px">
+            <div class="hd"><div class="ico g-orange"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 9V5M12 15v4M9 12H5M15 12h4"/><circle cx="12" cy="3.5" r="1.5"/><circle cx="12" cy="20.5" r="1.5"/><circle cx="3.5" cy="12" r="1.5"/><circle cx="20.5" cy="12" r="1.5"/></svg></div><div><b>MCP / API Gateway</b><small>단일 진입점</small></div></div>
+            <div class="feat" style="--fc:#ffb340"><span>API · MCP 라우팅</span><span>토큰 인증</span><span>호출 한도</span><span>호출 로그 수집</span></div>
+          </div>
+          <span class="chev" style="left:430px">›</span>
+          <div class="mod" style="left:446px;width:398px">
+            <div class="hd"><div class="ico g-violet"><svg viewBox="0 0 24 24"><path d="M4 8h13l-3-3M20 16H7l3 3"/></svg></div><div><b>API → MCP 컨버터</b><small>등록된 API를 MCP 서버로 만들어 컨테이너로 실행</small></div></div>
+            <div class="pipe" id="dpPipe"><span>API 명세</span><em>→</em><span>MCP 서버 생성</span><em>→</em><span>컨테이너 배포</span></div>
+            <div class="clus"><span class="dk">MCP SERVER CONTAINERS</span>
+              <div class="cgrid" id="dpGrid"><div class="ctn"><svg viewBox="0 0 24 24"><path d="M4 7.5l8-4 8 4v9l-8 4-8-4z"/><path d="M4 7.5l8 4 8-4M12 11.5v9"/></svg><code>mcp-stock</code><i></i></div><div class="ctn"><svg viewBox="0 0 24 24"><path d="M4 7.5l8-4 8 4v9l-8 4-8-4z"/><path d="M4 7.5l8 4 8-4M12 11.5v9"/></svg><code>mcp-hr</code><i></i></div><div class="ctn"><svg viewBox="0 0 24 24"><path d="M4 7.5l8-4 8 4v9l-8 4-8-4z"/><path d="M4 7.5l8 4 8-4M12 11.5v9"/></svg><code>mcp-crm</code><i></i></div><div class="ctn"><svg viewBox="0 0 24 24"><path d="M4 7.5l8-4 8 4v9l-8 4-8-4z"/><path d="M4 7.5l8 4 8-4M12 11.5v9"/></svg><code>mcp-erp</code><i></i></div><div class="ctn"><svg viewBox="0 0 24 24"><path d="M4 7.5l8-4 8 4v9l-8 4-8-4z"/><path d="M4 7.5l8 4 8-4M12 11.5v9"/></svg><code>mcp-billing</code><i></i></div><div class="ctn slot">+ 새 MCP 서버</div></div>
+            </div>
+          </div>
+        </div>
+
+        <span class="ab dk colk" style="left:1144px;top:112px">TARGET SERVERS</span>
+        <div class="ab tgt" style="top:140px;height:120px"><div class="rack" style="--lc:#38bdf8"><i></i><i></i><i></i></div><div><b>API Server</b><small>사내 REST API<br>컨버터 또는 직접 호출</small></div></div>
+        <div class="ab tgt" style="top:290px;height:120px"><div class="rack" style="--lc:#bf5af2"><i></i><i></i><i></i></div><div><b>MCP Server</b><small>사내 · 외부 MCP 서버<br>등록 후 Gateway 경유</small></div></div>
       </div>
       <div class="foot"><span>A2X 사업 제안</span><span class="pc"></span></div><div class="prog"></div>
     </div>
   </section>
 
-  <!-- 12. Principles -->
-  <section class="slide" data-ch="9">
-    <div class="card" style="--ac:#6d4c41">
-      <div class="eyebrow in"><i>09</i>서비스 원칙</div>
-      <h2 class="in d1">어떤 경우에도 준수하는 다섯 가지 원칙</h2>
-      <div class="princ">
-        <div class="pr in d1"><i>1</i>Agent는 신청을 스스로 제출하지 않습니다. 사용자가 확인하고 제출합니다.</div>
-        <div class="pr in d2"><i>2</i>라우팅 · 권한 · 규칙 판정은 코드로 합니다. LLM은 보조로만 씁니다.</div>
-        <div class="pr in d3"><i>3</i>컨설팅은 등록된 문서를 근거로 답하고, 근거가 없으면 모른다고 답합니다.</div>
-        <div class="pr in d4"><i>4</i>API 키, 비밀번호, 개인정보를 답변이나 로그에 노출하지 않습니다.</div>
-        <div class="pr in d5"><i>5</i>사용자는 자기 권한 밖의 자산과 구독 정보를 보거나 바꿀 수 없습니다.</div>
+  <!-- 6. Architecture detail + service flow -->
+  <section class="slide" data-appx data-ch="3" data-hook="detail" id="flowSlide">
+    <div class="card" style="--ac:#0f9d58">
+      <div class="flowhead">
+        <div>
+          <div class="eyebrow in"><i>06</i>부록 · 상세 구조와 서비스 흐름</div>
+          <h2 class="in d1">전체 구조와 서비스 동작 흐름</h2>
+          <p class="sub in d2">시나리오를 누르면 흐름이 재생됩니다. 노드에 마우스를 올리면 연결이 강조됩니다.</p>
+        </div>
+        <div class="in d2">
+          <div class="scen" id="scen"></div>
+          <div class="caption" id="caption"></div>
+        </div>
+      </div>
+      <div class="canvas dcanvas in d3" id="detailCanvas"><svg class="edges" id="detailEdges" viewBox="0 0 1440 498"></svg></div>
+      <div class="foot"><span>A2X 사업 제안</span><span class="pc"></span></div><div class="prog"></div>
+    </div>
+  </section>
+
+  <!-- Tech strategy: the role of AI agents (one page) -->
+  <section class="slide" data-appx data-ch="5" data-hook="agent1">
+    <div class="card" style="--ac:#7d5cf5">
+      <div class="eyebrow in"><i>12</i>부록 · Agent의 원가 효과</div>
+      <h2 class="in d1">AI Agent, <span class="grad">운영 포괄 구독의 원가 절감 수단</span></h2>
+      <p class="sub in d2">연계 운영에서 사람이 반복하던 일을 Agent가 대신합니다. 고객이 늘어도 운영 인력이 비례해 늘지 않습니다.</p>
+      <div class="aggrid">
+        <div class="agt in d3">
+          <div class="agr head"><span>Agent</span><span>사람이 하던 일</span><span>Agent가 대신</span><span>낮아지는 원가</span></div>
+          <div class="agr"><span><b>컨설팅</b></span><span>연계 방식 문의 응대, 가이드 찾아 안내</span><span>사내 문서를 근거로 연계 방식 제안. 근거가 없으면 모른다고 답함</span><span><em>문의 응대 시간</em></span></div>
+          <div class="agr"><span><b>프로세스 자동화</b></span><span>등록 · 구독 신청서 작성, 마스터 정보 찾기</span><span>외부 마스터를 읽어 신청서 자동 채움. 제출은 사람이 함</span><span><em>온보딩 리드타임</em></span></div>
+          <div class="agr"><span><b>오류 조치</b></span><span>로그 찾기, 원인 추정, 담당자 찾기</span><span>규칙 코드로 오류를 분류하고 조치 방법 안내</span><span><em>장애 대응 시간</em></span></div>
+        </div>
+        <div class="agchart in d4">
+          <svg viewBox="0 0 400 300" aria-label="연결 시스템 수에 따른 운영 인력 개념도">
+            <line x1="50" y1="250" x2="380" y2="250" stroke="#d1d1d6" stroke-width="2"/>
+            <line x1="50" y1="250" x2="50" y2="30" stroke="#d1d1d6" stroke-width="2"/>
+            <path class="ag-l1" d="M50 240 L360 50" fill="none" stroke="#b0b0b8" stroke-width="4" stroke-linecap="round"/>
+            <path class="ag-l2" d="M50 240 C 140 205, 250 190, 360 178" fill="none" stroke="url(#agg)" stroke-width="5" stroke-linecap="round"/>
+            <defs><linearGradient id="agg" x1="0" x2="1"><stop offset="0" stop-color="#2f6bff"/><stop offset="1" stop-color="#bf5af2"/></linearGradient></defs>
+            <text x="250" y="78" fill="#8e8e93" font-size="15" font-family="Jua, sans-serif">수작업 운영</text>
+            <text x="262" y="166" fill="#6e4ff6" font-size="15" font-family="Jua, sans-serif">A2X (Agent 대행)</text>
+            <text x="215" y="278" text-anchor="middle" fill="#6e6e73" font-size="13" font-family="Jua, sans-serif">연결된 시스템 수 →</text>
+            <text x="24" y="140" text-anchor="middle" fill="#6e6e73" font-size="13" font-family="Jua, sans-serif" transform="rotate(-90 24 140)">운영 인력 →</text>
+          </svg>
+          <span class="tagc">개념도</span>
+        </div>
+      </div>
+      <div class="agfoot in d5"><span>신뢰를 지키는 원칙</span><em>판정은 규칙 코드, 설명은 LLM</em><em>제출과 결정은 사람</em><em>근거가 없으면 모른다고 답함</em><i>상세 예시는 부록 A4~A6</i></div>
+      <div class="foot"><span>A2X 사업 제안</span><span class="pc"></span></div><div class="prog"></div>
+    </div>
+  </section>
+
+  <!-- 7a. Example: consulting -->
+  <section class="slide" data-appx data-ch="5" data-hook="exConsult">
+    <div class="card" style="--ac:#a142f4">
+      <div class="eyebrow in"><i>08</i>부록 · A2X Agent 예시 ① 컨설팅</div>
+      <h2 class="in d1">사내 문서 근거의 <span class="grad">연계 방식 제안</span></h2>
+      <p class="sub in d2">답변은 admin이 등록한 문서에서만 찾습니다. 근거가 없으면 지어내지 않고 모른다고 답합니다.</p>
+      <div class="exgrid">
+        <div>
+          <ol class="exs in d2" id="cSteps">
+            <li><i>1</i><div><b>질문 접수와 라우팅</b><span>포탈이 Supervisor에 전달하고, 규칙으로 컨설팅 Agent를 선택</span></div></li>
+            <li><i>2</i><div><b>사내 문서 검색 (RAG)</b><span>연계 가이드 · 정책 문서를 ChromaDB에서 찾음</span></div></li>
+            <li><i>3</i><div><b>근거 기반 제안</b><span>찾은 문서만 근거로 연계 방식을 제안하고 출처를 표시</span></div></li>
+            <li><i>4</i><div><b>근거가 없으면 모른다고 답변</b><span>추측하지 않고 문의처를 안내</span></div></li>
+          </ol>
+          <div class="exnote in d3"><b>사람의 역할</b>제안을 참고해 연계 방식을 정하고, 다음 단계(신청)를 시작합니다.</div>
+        </div>
+        <div class="device exdev in d3" id="cDev">
+          <div class="bar"><i></i><i></i><i></i><b>A2X 포탈 · 컨설팅</b><button class="rp" type="button">다시 재생 ↻</button></div>
+          <div class="cb u" data-t="주문 시스템의 재고 조회를 AI Agent에서 쓰고 싶어요. 어떻게 연계하나요?"></div>
+          <div class="rag fx"><b>검색된 문서</b><span>MCP 연계 가이드<i>0.91</i></span><span>API→MCP 변환 정책<i>0.87</i></span><span>보안 점검 기준<i>0.82</i></span></div>
+          <div class="cb a" data-t="읽기 전용 조회 API라서 API→MCP 변환 방식을 권장합니다. 변환 후 Tool 단위 권한으로 호출 범위를 제한할 수 있고, 등록 시 보안 정적 검사를 거칩니다."></div>
+          <div class="srcl fx">출처 · MCP 연계 가이드 3.2절 · API→MCP 변환 정책 1.1절</div>
+          <div class="cb u" data-t="다음 분기 API 사용료 정책도 알려 주세요."></div>
+          <div class="cb a dim" data-t="등록된 문서에서 근거를 찾지 못했습니다. 플랫폼 운영팀에 문의해 주세요."></div>
+          <p class="note">화면의 질문과 문서는 예시입니다</p>
+        </div>
+      </div>
+      <div class="foot"><span>A2X 사업 제안</span><span class="pc"></span></div><div class="prog"></div>
+    </div>
+  </section>
+
+  <!-- 7b. Example: process automation -->
+  <section class="slide" data-appx data-ch="5" data-hook="exAuto">
+    <div class="card" style="--ac:#a142f4">
+      <div class="eyebrow in"><i>09</i>부록 · A2X Agent 예시 ② 프로세스 자동화</div>
+      <h2 class="in d1">Agent의 신청서 작성, <span class="grad">사람의 최종 결정</span></h2>
+      <p class="sub in d2">외부 마스터를 MCP Tool로 읽어 등록 · 구독 신청서를 채우고, 제출 이후의 절차도 포탈에서 이어집니다.</p>
+      <div class="exgrid">
+        <div>
+          <ol class="exs in d2" id="aSteps">
+            <li><i>1</i><div><b>요청 이해 · 마스터 조회</b><span>시스템 · API · 조직 마스터를 MCP Tool로 읽음</span></div><em class="who t-violet">Agent</em></li>
+            <li><i>2</i><div><b>신청서 입력란 자동 채움</b><span>값마다 가져온 출처(마스터 · 컨설팅)를 표시</span></div><em class="who t-violet">Agent</em></li>
+            <li><i>3</i><div><b>확인 후 제출</b><span>Agent는 스스로 제출하지 않음</span></div><em class="who t-blue">사람</em></li>
+            <li><i>4</i><div><b>보안 정적 검사 · 승인 · 방화벽 요청</b><span>기업의 승인 절차를 그대로 따름</span></div><em class="who t-green">포탈</em></li>
+            <li><i>5</i><div><b>구독 완료 · 정책 배포</b><span>승인된 권한이 Gateway에 배포됨</span></div><em class="who t-green">포탈</em></li>
+          </ol>
+        </div>
+        <div class="device exdev in d3" id="demo">
+          <div class="bar"><i></i><i></i><i></i><b>A2X 포탈 · 구독 신청</b><button class="rp" type="button" id="replay">다시 재생 ↻</button></div>
+          <div class="cb u" data-t="주문 시스템의 재고 조회 API를 MCP로 구독 신청해 주세요."></div>
+          <div class="cb a" data-t="마스터에서 정보를 가져와 신청서를 채웠어요. 확인 후 제출해 주세요."></div>
+          <div class="field"><label>시스템</label><div class="box" data-v="주문관리시스템 (ORD)"><span class="txt"></span><span class="src">시스템 마스터</span></div></div>
+          <div class="field"><label>대상 API</label><div class="box" data-v="GET /inventory/{sku}"><span class="txt"></span><span class="src">API 마스터</span></div></div>
+          <div class="field"><label>연계 방식</label><div class="box" data-v="MCP Tool (API→MCP 변환)"><span class="txt"></span><span class="src">컨설팅</span></div></div>
+          <div class="field"><label>담당자</label><div class="box" data-v="플랫폼팀 · 운영 담당"><span class="txt"></span><span class="src">조직 마스터</span></div></div>
+          <button class="submit" type="button" id="aSubmit">확인 후 제출</button>
+          <p class="note" id="aNote">Agent는 스스로 제출하지 않습니다 · 화면의 값은 예시입니다</p>
+        </div>
+      </div>
+      <div class="foot"><span>A2X 사업 제안</span><span class="pc"></span></div><div class="prog"></div>
+    </div>
+  </section>
+
+  <!-- 7c. Example: error handling -->
+  <section class="slide" data-appx data-ch="5" data-hook="exErr">
+    <div class="card" style="--ac:#a142f4">
+      <div class="eyebrow in"><i>10</i>부록 · A2X Agent 예시 ③ 오류 조치</div>
+      <h2 class="in d1">규칙 기반 <span class="grad">오류 분류</span>와 조치 안내</h2>
+      <p class="sub in d2">원인 분류는 규칙 코드가 하고, LLM은 분류 결과를 사람이 읽기 쉬운 설명과 조치 방법으로 정리합니다.</p>
+      <div class="exgrid">
+        <div>
+          <ol class="exs in d2" id="eSteps">
+            <li><i>1</i><div><b>이상 감지</b><span>호출 로그의 오류율이 임계치를 넘으면 이벤트 발생</span></div><em class="who t-orange">모니터링</em></li>
+            <li><i>2</i><div><b>규칙으로 원인 분류</b><span>상태 코드와 지표 패턴을 규칙 표와 대조</span></div><em class="who t-gray">규칙 코드</em></li>
+            <li><i>3</i><div><b>원인 · 조치 안내</b><span>분류 결과를 근거로 설명과 조치 방법을 정리</span></div><em class="who t-violet">LLM</em></li>
+          </ol>
+          <div class="rules in d3" id="eRules">
+            <h6>분류 규칙 (예시)</h6>
+            <div class="rr"><code>401 · 403</code><span>권한 · 구독 문제</span><span>구독 · 권한 확인</span></div>
+            <div class="rr"><code>429</code><span>호출 한도 초과</span><span>한도 조정 요청</span></div>
+            <div class="rr"><code>5xx 급증</code><span>대상 시스템 장애</span><span>담당자 확인 요청</span></div>
+            <div class="rr"><code>timeout</code><span>네트워크 · 방화벽</span><span>방화벽 요청 확인</span></div>
+          </div>
+        </div>
+        <div class="device exdev in d3" id="eDev">
+          <div class="bar"><i></i><i></i><i></i><b>A2X 포탈 · 모니터링</b><button class="rp" type="button">다시 재생 ↻</button></div>
+          <div class="chart">
+            <h6>주문 API · 오류율 (최근 30분)</h6>
+            <svg viewBox="0 0 560 112" preserveAspectRatio="none">
+              <line x1="0" y1="66" x2="560" y2="66" stroke="#ff9f0a" stroke-width="1.5" stroke-dasharray="5 5"/>
+              <text x="4" y="60" font-size="11" fill="#c77700" font-family="sans-serif">임계치 10%</text>
+              <path id="eLine" d="M0,98 L40,96 L80,99 L120,95 L160,97 L200,94 L240,96 L280,93 L320,74 L360,40 L400,24 L440,20 L480,23 L520,18 L560,21" fill="none" stroke="#ff3b30" stroke-width="3" stroke-linejoin="round"/>
+            </svg>
+            <span class="al fx">오류율 38% · 임계치 초과</span>
+          </div>
+          <div class="cb u" data-t="주문 API 오류가 갑자기 늘었어요. 원인이 뭔가요?"></div>
+          <div class="clsr fx"><em>규칙 분류</em>5xx 급증 → 대상 시스템 장애 (주문 시스템 응답 지연)</div>
+          <div class="cb a" data-t="최근 10분간 /orders 조회에서 5xx 응답이 급증했습니다. 권한이나 한도 문제가 아니라 주문 시스템의 응답 지연으로 분류됩니다."></div>
+          <ol class="acts">
+            <li class="fx"><i>조치 1</i>주문 시스템 담당자에게 확인 요청</li>
+            <li class="fx"><i>조치 2</i>복구 전까지 호출 한도 임시 하향 검토</li>
+          </ol>
+          <p class="note">조치 실행은 사람이 결정합니다 · 화면의 값은 예시입니다</p>
+        </div>
+      </div>
+      <div class="foot"><span>A2X 사업 제안</span><span class="pc"></span></div><div class="prog"></div>
+    </div>
+  </section>
+
+  <!-- Appendix: references -->
+  <section class="slide" data-appx data-ch="9" data-hook="refs">
+    <div class="card" style="--ac:#6e6e73">
+      <div class="eyebrow in"><i>20</i>부록 · 참고 자료</div>
+      <h2 class="in d1">참고 자료</h2>
+      <div class="refs in d2">
+        <div><h4>기회 발견</h4><ol>
+          <li>한국은행, BOK 이슈노트 「AI 확산과 생산성 효과」(2026.11.17) · ZDNet Korea 보도 <a href="https://zdnet.co.kr/view?no=20261117102535" target="_blank">zdnet.co.kr/view?no=20261117102535</a></li>
+          <li>W. Chan Kim · Renée Mauborgne, 「Blue Ocean Shift」, Hachette Books (2017)</li>
+        </ol></div>
+        <div><h4>시장 분석</h4><ol>
+          <li>Gartner, $234 Billion in Enterprise Application Software Spend Is at Risk from Agentic AI (2026.7.1) <a href="https://www.gartner.com/en/newsroom/press-releases/2026-07-01-gartner-says-us-dollars-234-billion-in-enterprise-application-software-spend-is-at-risk-from-agentic-artificial-intelligence" target="_blank">gartner.com/newsroom</a></li>
+          <li>MuleSoft, 2025 Connectivity Benchmark Report (IT 리더 1,050명 조사, 앱 평균 897개 · 연결 29%) <a href="https://www.salesforce.com/news/stories/connectivity-report-announcement-2025/" target="_blank">salesforce.com/news</a></li>
+          <li>Anthropic, Donating the Model Context Protocol and establishing the Agentic AI Foundation (2025.12.9) <a href="https://www.anthropic.com/news/donating-the-model-context-protocol-and-establishing-of-the-agentic-ai-foundation" target="_blank">anthropic.com/news</a></li>
+          <li>Gartner, Over 40% of Agentic AI Projects Will Be Canceled by End of 2027 (2025.6.25, 33% 전망 포함) <a href="https://www.gartner.com/en/newsroom/press-releases/2025-06-25-gartner-predicts-over-40-percent-of-agentic-ai-projects-will-be-canceled-by-end-of-2027" target="_blank">gartner.com/newsroom</a></li>
+          <li>Gartner, Market Guide for AI Gateways (2025.10) · 세 갈래 분류는 Gravitee 요약 인용 <a href="https://www.gravitee.io/blog/gravitee-in-gartner-market-guide-for-ai-gateways" target="_blank">gravitee.io/blog</a></li>
+        </ol></div>
+        <div><h4>경쟁 제품 · 표준</h4><ol>
+          <li>Kong, AI Gateway 3.12 MCP 지원 (2025.10) <a href="https://konghq.com/blog/product-releases/securing-observing-governing-mcp-servers-with-ai-gateway" target="_blank">konghq.com/blog</a></li>
+          <li>Envoy AI Gateway v1.0 (2026.6) <a href="https://aigateway.envoyproxy.io/blog/v1.0-release-announcement/" target="_blank">aigateway.envoyproxy.io</a></li>
+          <li>Linux Foundation, agentgateway 프로젝트 합류 (2025.8) <a href="https://linuxfoundation.org/press/linux-foundation-welcomes-agentgateway-project-to-accelerate-ai-agent-adoption-while-maintaining-security-observability-and-governance" target="_blank">linuxfoundation.org/press</a></li>
+          <li>Model Context Protocol 사양 · Authorization <a href="https://modelcontextprotocol.io/specification/" target="_blank">modelcontextprotocol.io/specification</a></li>
+          <li>Cerbos, MCP authorization standards: OAuth scopes, AuthZEN, and what is still missing (2026) <a href="https://cerbos.dev/blog/mcp-authorization-standards" target="_blank">cerbos.dev/blog</a></li>
+        </ol></div>
       </div>
       <div class="foot"><span>A2X 사업 제안</span><span class="pc"></span></div><div class="prog"></div>
     </div>
@@ -970,15 +1553,33 @@
   /* ---------- deck ---------- */
   const stage = $('#stage'), slides = [...document.querySelectorAll('.slide')], N = slides.length;
   const tabs = $('#tabs');
-  const TABS = ['표지', '사업 배경', '통제 필요', '문제 · 해법', '큰 그림', 'Data plane', '구조 · 흐름', 'Agent 개요', '컨설팅', '자동화', '오류 조치', '핵심 경쟁력', '사업 모델', '위험 대응', '서비스 원칙'];
+  const pad = (n) => String(n).padStart(2, '0');
+  const tabFor = [], label = [];
+  const M = slides.filter((s) => !('appx' in s.dataset)).length, A = N - M;
+  let mi = 0, ai = 0, appxTab = null;
   slides.forEach((s, i) => {
-    const c = (s.querySelector('.card') && s.querySelector('.card').style.getPropertyValue('--ac')) || '#0071e3';
-    const b = document.createElement('button'); b.className = 'tab'; b.style.setProperty('--ac', c);
-    b.innerHTML = `<span>${String(i + 1).padStart(2, '0')}</span><small>${TABS[i] || ''}</small>`;
-    b.onclick = () => go(i); tabs.appendChild(b);
-    const eb = s.querySelector('.eyebrow i'); if (eb) eb.textContent = String(i + 1).padStart(2, '0');
+    const eb = s.querySelector('.eyebrow i');
+    if ('appx' in s.dataset) {
+      ai++;
+      if (!appxTab) {
+        const start = i; appxTab = document.createElement('button'); appxTab.className = 'tab appx'; appxTab.style.setProperty('--ac', '#6e6e73');
+        appxTab.innerHTML = `<span>부록</span><small>${A}쪽</small>`; appxTab.onclick = () => go(start); tabs.appendChild(appxTab);
+      }
+      if (eb) eb.textContent = 'A' + ai;
+      label[i] = `부록 ${ai} / ${A}`;
+    } else {
+      mi++;
+      const c = (s.querySelector('.card') && s.querySelector('.card').style.getPropertyValue('--ac')) || '#0071e3';
+      const b = document.createElement('button'); b.className = 'tab'; b.style.setProperty('--ac', c);
+      b.innerHTML = `<span>${pad(mi)}</span><small>${s.dataset.tab || ''}</small>`;
+      b.onclick = () => go(i); tabs.appendChild(b);
+      if (eb) eb.textContent = pad(mi);
+      label[i] = `${mi} / ${M}`;
+    }
+    tabFor[i] = tabs.children.length - 1;
+    const pc = s.querySelector('.pc'); if (pc) pc.textContent = label[i];
+    const pg = s.querySelector('.prog'); if (pg) pg.style.width = `${((i + 1) / N) * 100}%`;
   });
-  slides.forEach((s, i) => { const pc = s.querySelector('.pc'); if (pc) pc.textContent = `${i + 1} / ${N}`; const pg = s.querySelector('.prog'); if (pg) pg.style.width = `${((i + 1) / N) * 100}%`; });
 
   const hooks = {};
   let cur = -1;
@@ -989,8 +1590,8 @@
     if (cur >= 0) { const old = slides[cur]; old.classList.remove('active'); old.classList.toggle('back', fwd); const h = hooks[old.dataset.hook]; if (h) h.stop(); }
     const s = slides[i]; s.classList.remove('back'); if (!fwd) s.classList.add('back'); void s.offsetWidth; s.classList.remove('back'); s.classList.add('active');
     cur = i;
-    [...tabs.children].forEach((t, k) => t.classList.toggle('on', k === i));
-    $('#count').textContent = `${i + 1} / ${N}`;
+    [...tabs.children].forEach((t, k) => t.classList.toggle('on', k === tabFor[i]));
+    $('#count').textContent = label[i];
     history.replaceState(null, '', `#${i + 1}`);
     const h = hooks[s.dataset.hook]; if (h) setTimeout(() => cur === i && h.start(), 450);
   }
@@ -1000,16 +1601,287 @@
   document.querySelectorAll('[data-jump]').forEach((b) => b.onclick = () => go(slides.findIndex((x) => x.dataset.hook === b.dataset.jump)));
   document.querySelectorAll('[data-go]').forEach((b) => b.onclick = () => b.dataset.go === 'next' ? go(cur + 1) : go(slides.indexOf($('#flowSlide'))));
   addEventListener('keydown', (e) => {
-    if (['ArrowRight', 'PageDown', ' ', 'Enter'].includes(e.key)) { e.preventDefault(); go(cur + 1); }
-    else if (['ArrowLeft', 'PageUp', 'Backspace'].includes(e.key)) { e.preventDefault(); go(cur - 1); }
+    if (['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter'].includes(e.key)) { e.preventDefault(); go(cur + 1); }
+    else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'].includes(e.key)) { e.preventDefault(); go(cur - 1); }
     else if (e.key === 'Home') go(0); else if (e.key === 'End') go(N - 1);
     else if (e.key === 'f' || e.key === 'F') $('#fs').click();
   });
+  // mouse wheel: one notch = one slide (like PowerPoint); a burst of trackpad events counts once
+  let wheelLock = 0;
+  addEventListener('wheel', (e) => {
+    if (e.ctrlKey || Math.abs(e.deltaY) < Math.abs(e.deltaX) || Math.abs(e.deltaY) < 4) return;
+    e.preventDefault();
+    const now = Date.now();
+    if (now < wheelLock) { wheelLock = Math.max(wheelLock, now + 250); return; }
+    wheelLock = now + 450;
+    go(cur + (e.deltaY > 0 ? 1 : -1));
+  }, { passive: false });
   let tx = null;
   addEventListener('touchstart', (e) => tx = e.touches[0].clientX, { passive: true });
   addEventListener('touchend', (e) => { if (tx == null) return; const dx = e.changedTouches[0].clientX - tx; if (Math.abs(dx) > 50) go(cur + (dx < 0 ? 1 : -1)); tx = null; });
   function fit() { const s = Math.min(innerWidth / 1600, innerHeight / 900); stage.style.transform = `translate(-50%, -50%) scale(${s})`; }
   addEventListener('resize', fit); fit();
+
+  /* ---------- Scene: the customer's question (chat replay) ---------- */
+  (() => {
+    const root = $('#askChat'), msgs = [...root.querySelectorAll('.m')], warn = root.querySelector('.warn'), cmp = root.querySelector('.cmp3');
+    let my = 0;
+    const reset = () => { msgs.forEach((m) => { m.classList.remove('show'); if (m.dataset.t) m.textContent = ''; }); warn.classList.remove('show'); cmp.classList.remove('show'); };
+    const type = async (m, ok, ms) => { const t = m.dataset.t; m.classList.add('show');
+      for (let i = 1; i <= t.length; i++) { if (!ok()) return false; m.textContent = t.slice(0, i); await sleep(ms); } return ok(); };
+    const wait = async (ms, ok) => { await sleep(ms); return ok(); };
+    hooks.ask = {
+      async start() {
+        const t = ++my, ok = () => t === my; reset();
+        if (!await type(msgs[0], ok, 38) || !await wait(500, ok)) return;
+        msgs[1].classList.add('show'); msgs[1].textContent = '· · ·';
+        if (!await wait(900, ok) || !await type(msgs[1], ok, 24) || !await wait(900, ok)) return;
+        msgs[2].classList.add('show');
+        if (!await wait(1000, ok)) return;
+        warn.classList.add('show');
+        if (!await wait(800, ok)) return;
+        cmp.classList.add('show');
+      },
+      stop() { my++; reset(); }
+    };
+  })();
+
+  /* ---------- Shared: lucide-style line icons inside SVG ---------- */
+  const ICONS = {
+    wrench: [['path', { d: 'M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z' }]],
+    lock: [['rect', { x: 3, y: 11, width: 18, height: 11, rx: 2 }], ['path', { d: 'M7 11V7a5 5 0 0 1 10 0v4' }]],
+    clipboard: [['rect', { x: 8, y: 2, width: 8, height: 4, rx: 1 }], ['path', { d: 'M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2' }]],
+    key: [['circle', { cx: 7.5, cy: 15.5, r: 5.5 }], ['path', { d: 'm21 2-9.6 9.6' }], ['path', { d: 'm15.5 7.5 3 3L22 7l-3-3' }]],
+    bot: [['path', { d: 'M12 8V4H8' }], ['rect', { x: 4, y: 8, width: 16, height: 12, rx: 2 }], ['path', { d: 'M2 14h2' }], ['path', { d: 'M20 14h2' }], ['path', { d: 'M15 13v2' }], ['path', { d: 'M9 13v2' }]],
+  };
+  const icon = (parent, name, cx, cy, size, color) => {
+    const g = el('g', { transform: `translate(${cx - size / 2} ${cy - size / 2}) scale(${size / 24})`, fill: 'none', stroke: color, 'stroke-width': 2, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }, parent);
+    ICONS[name].forEach(([t, a]) => el(t, a, g));
+    return g;
+  };
+  const stext = (parent, attrs, str) => { const t = el('text', attrs, parent); t.textContent = str; return t; };
+
+  /* ---------- Scene: noncustomer map ---------- */
+  (() => {
+    const svg = $('#ncMap'); if (!svg) return;
+    const cx = 300, cy = 240;
+    [[220, '#f3efff', '#c9bcfb', 'r3'], [160, '#fdeeee', '#f5b5b0', 'r2'], [104, '#fff3e0', '#ffc978', 'r1']].forEach(([r, f, st, c]) => el('circle', { class: `r ${c}`, cx, cy, r, fill: f, stroke: st, 'stroke-width': 2 }, svg));
+    el('circle', { class: 'r r0', cx, cy, r: 54, fill: '#2f6bff' }, svg);
+    el('circle', { class: 'bound', cx, cy, r: 62, fill: 'none', stroke: '#2f6bff', 'stroke-width': 2, 'stroke-dasharray': '5 6' }, svg);
+    stext(svg, { x: cx, y: cy - 4, 'text-anchor': 'middle', fill: '#fff', 'font-size': 15, 'font-family': 'Do Hyeon' }, '기존 API');
+    stext(svg, { x: cx, y: cy + 16, 'text-anchor': 'middle', fill: '#fff', 'font-size': 15, 'font-family': 'Do Hyeon' }, '연계 이용');
+    [[79, '#b06d00', '1계층'], [132, '#d70015', '2계층'], [190, '#6e4ff6', '3계층']].forEach(([r, c, t]) => stext(svg, { x: cx, y: cy - r + 6, 'text-anchor': 'middle', fill: c, 'font-size': 15, 'font-family': 'Do Hyeon' }, t));
+    stext(svg, { x: cx, y: 476, 'text-anchor': 'middle', fill: '#8e8e93', 'font-size': 13, 'font-family': 'Jua' }, '가운데: API 연계까지만 쓰는 시스템 · 바깥으로 갈수록 미개척');
+    const T = [
+      { c: '#ff9500', fill: '#fff6ea', st: '#ffd9a3', ic: 'wrench', tier: '1계층 · 이탈 직전', title: '직접 만들어 버티는 조직', q: '“표준을 기다리다간 늦어요. 우리가 따로 만들죠.”', key: '표준의 완성도', from: [cx + 56, cy - 56] },
+      { c: '#d93025', fill: '#fdeeee', st: '#f5b5b0', ic: 'lock', tier: '2계층 · 검토 후 거부', title: '데이터를 열지 않은 시스템', q: '“사람마다 권한이 다른데, AI에 그냥 열 순 없어요.”', key: '개인별 권한관리', from: [cx + 132, cy] },
+      { c: '#7d5cf5', fill: '#f4f0ff', st: '#d2c6fb', ic: 'clipboard', tier: '3계층 · 미개척', title: '문제를 아직 모르는 조직', q: '“일단 복사해서 붙여 넣어 쓰고 있어요.”', key: '운영 포괄 구독', from: [cx + 146, cy + 122] },
+    ];
+    stext(svg, { x: 1305, y: 26, 'text-anchor': 'middle', fill: '#6e6e73', 'font-size': 13, 'font-family': 'Jua' }, '해결 열쇠');
+    T.forEach((t, i) => {
+      const y = 40 + i * 141, c = y + 59, x0 = 640;
+      const [fx, fy] = t.from;
+      el('path', { class: 'lead', d: `M${fx} ${fy} C ${fx + 120} ${fy}, ${x0 - 110} ${c}, ${x0} ${c}`, fill: 'none', stroke: t.c, 'stroke-width': 2, 'stroke-dasharray': '400', style: `transition-delay:${.6 + i * .25}s` }, svg);
+      el('circle', { cx: fx, cy: fy, r: 6, fill: t.c, stroke: '#fff', 'stroke-width': 2 }, svg);
+      const g = el('g', { class: 'ncc', style: `transition-delay:${.8 + i * .25}s` }, svg);
+      el('rect', { x: x0, y, width: 780, height: 118, rx: 24, fill: t.fill, stroke: t.st }, g);
+      el('circle', { cx: x0 + 62, cy: c, r: 36, fill: t.c }, g);
+      icon(g, t.ic, x0 + 62, c, 32, '#fff');
+      stext(g, { x: x0 + 122, y: c - 24, fill: t.c, 'font-size': 13.5, 'font-family': 'Jua' }, t.tier);
+      stext(g, { x: x0 + 122, y: c + 8, fill: '#1d1d1f', 'font-size': 27, 'font-family': 'Do Hyeon' }, t.title);
+      stext(g, { x: x0 + 122, y: c + 38, fill: '#6e6e73', 'font-size': 16, 'font-family': 'Jua' }, t.q);
+      const k = el('g', { class: 'keyp', style: `transition-delay:${1.2 + i * .25}s` }, svg);
+      el('rect', { x: 1208, y: c - 22, width: 196, height: 44, rx: 22, fill: '#fff', stroke: t.c, 'stroke-width': 1.5 }, k);
+      icon(k, 'key', 1232, c, 18, t.c);
+      stext(k, { x: 1250, y: c + 6, fill: t.c, 'font-size': 16, 'font-family': 'Do Hyeon' }, t.key);
+    });
+  })();
+
+  /* ---------- Scene: red ocean & empty slots ---------- */
+  (() => {
+    const svg = $('#oceanSvg'); if (!svg) return;
+    const defs = el('defs', {}, svg);
+    const rg = el('radialGradient', { id: 'seag' }, defs);
+    el('stop', { offset: 0, 'stop-color': '#ffe7e1' }, rg); el('stop', { offset: 1, 'stop-color': '#ffcfc3' }, rg);
+    const sg = el('linearGradient', { id: 'slotg', x1: 0, x2: 1 }, defs);
+    el('stop', { offset: 0, 'stop-color': '#eaf1ff' }, sg); el('stop', { offset: 1, 'stop-color': '#f1ecff' }, sg);
+    const G = [['API 관리 플랫폼 + AI', '예: Kong · Gravitee'], ['클라우드 AI 플랫폼 내장', '예: 대형 클라우드 사업자'], ['오픈소스 AI Gateway', '예: Envoy · agentgateway · LiteLLM']];
+    const ox = 660, oy = 180;
+    stext(svg, { x: 155, y: 12, 'text-anchor': 'middle', fill: '#6e6e73', 'font-size': 13, 'font-family': 'Jua' }, 'AI Gateway 시장의 세 갈래³');
+    G.forEach(([a, b], i) => {
+      const y = 30 + i * 112, c = y + 38;
+      el('path', { class: 'flow', d: `M300 ${c} C 400 ${c}, 430 ${oy}, ${ox - 165} ${oy}`, fill: 'none', stroke: '#ff8a73', 'stroke-width': 2.5 }, svg);
+      el('rect', { x: 10, y, width: 290, height: 76, rx: 18, fill: '#fff', stroke: '#e3e6ec' }, svg);
+      stext(svg, { x: 30, y: c - 4, fill: '#1d1d1f', 'font-size': 19, 'font-family': 'Do Hyeon' }, a);
+      stext(svg, { x: 30, y: c + 20, fill: '#8e8e93', 'font-size': 13, 'font-family': 'Jua' }, b);
+    });
+    el('circle', { class: 'sea', cx: ox, cy: oy, r: 172, fill: '#ff8a73', opacity: .18 }, svg);
+    el('circle', { cx: ox, cy: oy, r: 160, fill: 'url(#seag)' }, svg);
+    stext(svg, { x: ox, y: 76, 'text-anchor': 'middle', fill: '#d93025', 'font-size': 32, 'font-family': 'Do Hyeon' }, '레드오션');
+    stext(svg, { x: ox, y: 100, 'text-anchor': 'middle', fill: '#b3261e', 'font-size': 14, 'font-family': 'Jua' }, '모두가 같은 기능으로 수렴');
+    [['모델 라우팅', 600, 140], ['토큰 비용', 724, 140], ['MCP 프록시', 586, 190], ['인증', 706, 190], ['호출 한도', 660, 240]].forEach(([t, x, y], k) => {
+      const w = t.length * 15 + 30, g = el('g', { class: 'chip', style: `transition-delay:${.5 + k * .12}s` }, svg);
+      el('rect', { x: x - w / 2, y: y - 17, width: w, height: 34, rx: 17, fill: '#fff', stroke: '#ffb3a3' }, g);
+      stext(g, { x, y: y + 5, 'text-anchor': 'middle', fill: '#3a3a3c', 'font-size': 14.5, 'font-family': 'Jua' }, t);
+    });
+    el('path', { d: `M${ox + 168} ${oy} H 900`, stroke: '#2f6bff', 'stroke-width': 3, fill: 'none', class: 'flow' }, svg);
+    el('polygon', { points: `912,${oy} 898,${oy - 8} 898,${oy + 8}`, fill: '#2f6bff' }, svg);
+    stext(svg, { x: 864, y: oy - 14, 'text-anchor': 'middle', fill: '#2f6bff', 'font-size': 13, 'font-family': 'Jua' }, '차별화 기회');
+    stext(svg, { x: 1180, y: 22, 'text-anchor': 'middle', fill: '#2f6bff', 'font-size': 19, 'font-family': 'Do Hyeon' }, '아무도 채우지 않은 세 자리');
+    [['key', '권한 · 누가 무엇까지 할 수 있나', 'MCP 표준은 인증 · 토큰까지만 정의⁴'], ['bot', '운영 · 연계 업무는 누가 하나', '제품은 엔진만 제공 → A2X는 Agent가 대행'], ['wrench', '맞춤 · 고객사마다 다른 시스템', '제품은 표준 기능만 → 맞춤은 별도 SI 몫']].forEach(([ic, a, b], i) => {
+      const y = 40 + i * 108, c = y + 48, g = el('g', { class: 'slot', style: `transition-delay:${1 + i * .25}s` }, svg);
+      el('rect', { class: 'sl', x: 930, y, width: 500, height: 96, rx: 22, fill: 'url(#slotg)', stroke: '#2f6bff', 'stroke-width': 2 }, g);
+      el('circle', { cx: 984, cy: c, r: 28, fill: '#2f6bff' }, g);
+      icon(g, ic, 984, c, 26, '#fff');
+      stext(g, { x: 1030, y: c - 5, fill: '#1d1d1f', 'font-size': 22, 'font-family': 'Do Hyeon' }, a);
+      stext(g, { x: 1030, y: c + 22, fill: '#3a3a3c', 'font-size': 15, 'font-family': 'Jua' }, b);
+    });
+  })();
+
+  /* ---------- Scene: revenue build-up (concept) ---------- */
+  (() => {
+    const svg = $('#revChart'); if (!svg) return;
+    const F = 'Jua, sans-serif', D = 'Do Hyeon, sans-serif';
+    const ON = { 0: ['A', 6], 2: ['B', 4.4], 4: ['C', 3.3], 7: ['D', 2.5], 10: ['E', 1.9] };
+    const Q = [...Array(12).keys()].map((q) => { const n = Object.keys(ON).filter((k) => +k <= q).length; return { p: 2, c: 1.2 * n, o: ON[q] }; });
+    const X = (q) => 96 + q * 82, W = 46, base = 170, ku = 16, kd = 13;
+    const defs = el('defs', {}, svg);
+    const gg = (id, a, b) => { const g = el('linearGradient', { id, x1: 0, x2: 0, y1: 0, y2: 1 }, defs); el('stop', { offset: 0, 'stop-color': a }, g); el('stop', { offset: 1, 'stop-color': b }, g); };
+    gg('rvO', '#ffc061', '#f29900'); gg('rvB', '#6f9bff', '#2f6bff'); gg('rvG', '#3fbf68', '#1e8e3e');
+    const ar = el('linearGradient', { id: 'rvA', x1: 0, x2: 0, y1: 0, y2: 1 }, defs);
+    el('stop', { offset: 0, 'stop-color': '#2f6bff', 'stop-opacity': .16 }, ar); el('stop', { offset: 1, 'stop-color': '#2f6bff', 'stop-opacity': 0 }, ar);
+    // year bands
+    [0, 1, 2].forEach((y) => {
+      const x0 = X(y * 4) - 18, x1 = X(y * 4 + 3) + W + 18;
+      if (y % 2 === 0) el('rect', { x: x0, y: 8, width: x1 - x0, height: 270, rx: 14, fill: '#000', opacity: .025 }, svg);
+      stext(svg, { x: (x0 + x1) / 2, y: 294, 'text-anchor': 'middle', fill: '#8e8e93', 'font-size': 13, 'font-family': F }, `${y + 1}년차`);
+    });
+    // lane labels
+    stext(svg, { x: 18, y: 120, fill: '#1e8e3e', 'font-size': 18, 'font-family': D }, '반복');
+    stext(svg, { x: 18, y: 140, fill: '#6e6e73', 'font-size': 12.5, 'font-family': F }, '구독');
+    stext(svg, { x: 18, y: base + 40, fill: '#c77700', 'font-size': 18, 'font-family': D }, '1회');
+    stext(svg, { x: 18, y: base + 60, fill: '#6e6e73', 'font-size': 12.5, 'font-family': F }, '맞춤');
+    // recurring area glow
+    el('path', { class: 'rv-fade', d: 'M' + Q.map((d, q) => `${X(q) + W / 2} ${base - (d.p + d.c) * ku}`).join(' L') + ` L${X(11) + W / 2} ${base} L${X(0) + W / 2} ${base} Z`, fill: 'url(#rvA)' }, svg);
+    Q.forEach((d, q) => {
+      const x = X(q), dl = `transition-delay:${.5 + q * .07}s`;
+      el('rect', { class: 'rv-bar', x, y: base - d.p * ku, width: W, height: d.p * ku - 2, rx: 6, fill: 'url(#rvG)', style: dl }, svg);
+      el('rect', { class: 'rv-bar', x, y: base - (d.p + d.c) * ku, width: W, height: d.c * ku - 2, rx: 6, fill: 'url(#rvB)', style: dl }, svg);
+      if (d.o) {
+        const [nm, v] = d.o, h = v * kd;
+        el('rect', { class: 'rv-bar rv-dn', x, y: base + 6, width: W, height: h, rx: 6, fill: 'url(#rvO)', style: `transition-delay:${.6 + q * .07}s` }, svg);
+        const g = el('g', { class: 'rv-tag', style: `transition-delay:${.9 + q * .07}s` }, svg);
+        el('circle', { cx: x + W / 2, cy: base + 6 + h + 16, r: 12, fill: '#fff', stroke: '#f29900', 'stroke-width': 2 }, g);
+        stext(g, { x: x + W / 2, y: base + 6 + h + 21, 'text-anchor': 'middle', fill: '#c77700', 'font-size': 13, 'font-family': D }, nm);
+      }
+    });
+    el('line', { x1: 74, x2: 1080, y1: base + 2, y2: base + 2, stroke: '#c7c7cc', 'stroke-width': 2 }, svg);
+    // learning curve on customization (bottom edges)
+    const oq = Object.keys(ON).map(Number);
+    el('path', { class: 'rv-draw', pathLength: 1, d: 'M' + oq.map((q) => `${X(q) + W / 2} ${base + 6 + ON[q][1] * kd}`).join(' L'), fill: 'none', stroke: '#f29900', 'stroke-width': 2, 'stroke-dasharray': '1', 'stroke-dashoffset': '1' }, svg);
+    stext(svg, { class: 'rv-tag', x: X(5) - 20, y: base + 100, fill: '#c77700', 'font-size': 14.5, 'font-family': F, style: 'transition-delay:1.6s' }, '시스템 A~E를 연결할 때마다 맞춤 원가 ↓ (사례 재사용)');
+    // recurring trend
+    const ty = (v) => base - v * ku - 16;
+    el('path', { class: 'rv-draw', pathLength: 1, d: `M${X(0) + W / 2} ${ty(3.2)} C ${X(4)} ${ty(5.2)}, ${X(8)} ${ty(7.2)}, ${X(11) + W / 2 - 6} ${ty(8)}`, fill: 'none', stroke: '#2f6bff', 'stroke-width': 2.5, 'stroke-dasharray': '1', 'stroke-dashoffset': '1' }, svg);
+    const ex = X(11) + W / 2, ey = ty(8);
+    el('polygon', { class: 'rv-tag', points: `${ex + 6},${ey} ${ex - 8},${ey - 7} ${ex - 8},${ey + 7}`, fill: '#2f6bff', style: 'transition-delay:2.3s' }, svg);
+    stext(svg, { class: 'rv-tag', x: X(0), y: 30, fill: '#2f6bff', 'font-size': 14.5, 'font-family': F, style: 'transition-delay:1.8s' }, '연결이 늘수록 반복 매출이 계단식으로 쌓임');
+    // mix panel
+    const sum = (a, b, f) => Q.slice(a, b).reduce((t, d) => t + f(d), 0);
+    const mix = [0, 2].map((y) => { const o = sum(y * 4, y * 4 + 4, (d) => (d.o ? d.o[1] : 0)), r = sum(y * 4, y * 4 + 4, (d) => d.p + d.c); return o / (o + r); });
+    el('rect', { x: 1110, y: 36, width: 318, height: 242, rx: 20, fill: '#fff', stroke: '#e6e8ed' }, svg);
+    stext(svg, { x: 1134, y: 70, fill: '#1d1d1f', 'font-size': 20, 'font-family': D }, '매출 믹스의 이동');
+    [['1년차', mix[0]], ['3년차', mix[1]]].forEach(([t, r], i) => {
+      const y = 94 + i * 64, w = 272;
+      stext(svg, { x: 1134, y: y + 4, fill: '#6e6e73', 'font-size': 13, 'font-family': F }, t);
+      el('rect', { class: 'rv-mix', x: 1134, y: y + 14, width: w * r - 3, height: 28, rx: 8, fill: 'url(#rvO)', style: `transition-delay:${1.2 + i * .3}s` }, svg);
+      el('rect', { class: 'rv-mix', x: 1134 + w * r, y: y + 14, width: w * (1 - r), height: 28, rx: 8, fill: '#2f6bff', style: `transition-delay:${1.3 + i * .3}s` }, svg);
+    });
+    [['#f29900', '1회 맞춤'], ['#2f6bff', '구독']].forEach(([c, t], i) => {
+      el('rect', { x: 1134 + i * 100, y: 226, width: 12, height: 12, rx: 3, fill: c }, svg);
+      stext(svg, { x: 1152 + i * 100, y: 237, fill: '#3a3a3c', 'font-size': 13, 'font-family': F }, t);
+    });
+    stext(svg, { x: 1134, y: 262, fill: '#1e8e3e', 'font-size': 14, 'font-family': F }, '맞춤은 줄고, 구독 비중이 커짐');
+  })();
+  /* ---------- Scene: market stats count-up ---------- */
+  (() => {
+    const nums = [...document.querySelectorAll('.kpi b[data-n]')];
+    let my = 0;
+    const show = (b, v) => { b.textContent = Math.round(v).toLocaleString('ko-KR') + b.dataset.sfx; };
+    hooks.market = {
+      start() {
+        const t = ++my, t0 = performance.now();
+        const step = (now) => {
+          if (t !== my) return;
+          const k = Math.min(1, (now - t0) / 1200), e = 1 - Math.pow(1 - k, 3);
+          nums.forEach((b) => show(b, +b.dataset.n * e));
+          if (k < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+      },
+      stop() { my++; nums.forEach((b) => show(b, +b.dataset.n)); }
+    };
+  })();
+
+  /* ---------- Scene: strategy canvas (team scores 0-10) ---------- */
+  (() => {
+    const svg = $('#canvasSvg');
+    // [label line 1, label line 2, A2X, AI gateway products, ERRC group]
+    const F = [
+      ['멀티 LLM 라우팅', '· 토큰 관리', 2, 9, 0], ['범용 기능', '확장 경쟁', 1, 8, 0], ['Gateway 엔진', '자체 개발', 3, 9, 1],
+      ['시스템별', '초기 구축 투자', 2, 7, 1], ['MCP · A2A', '표준 수용', 8, 7, 2], ['사내 보안', '· 인증 통합', 9, 5, 2],
+      ['E2E', '통합 관제', 9, 5, 2], ['Legacy 개인별', '권한관리', 9, 1, 3], ['운영 포괄', '구독 서비스', 9, 1, 3], ['고객사별', '맞춤 연동', 8, 3, 3],
+    ];
+    const G = [['제거', '#8e8e93'], ['감소', '#ff9500'], ['증가', '#2f6bff'], ['창출', '#7d5cf5']];
+    const X = (i) => 140 + i * 136, Y = (v) => 214 - v * 18;
+    const font = 'Jua, sans-serif';
+    const txt = (attrs, s, parent = svg) => { const t = el('text', { 'font-family': font, ...attrs }, parent); t.textContent = s; return t; };
+    const defs = el('defs', {}, svg), lg = el('linearGradient', { id: 'cvg', x1: 0, x2: 1 }, defs);
+    el('stop', { offset: 0, 'stop-color': '#2f6bff' }, lg); el('stop', { offset: 1, 'stop-color': '#bf5af2' }, lg);
+    el('rect', { x: X(7) - 64, y: 4, width: X(9) - X(7) + 128, height: 214, rx: 16, fill: '#f3efff' }, svg);
+    txt({ x: X(8), y: 24, 'text-anchor': 'middle', fill: '#6e4ff6', 'font-size': 13.5 }, '글로벌 제품 · 표준 모두 미해결');
+    [0, 5, 10].forEach((v) => {
+      el('line', { x1: 70, x2: 1420, y1: Y(v), y2: Y(v), stroke: '#ececf0', 'stroke-dasharray': v ? '4 6' : 'none' }, svg);
+      txt({ x: 58, y: Y(v) + 4, 'text-anchor': 'end', fill: '#a1a1a6', 'font-size': 12 }, String(v));
+    });
+    let start = 0;
+    for (let i = 1; i <= F.length; i++) {
+      if (i === F.length || F[i][4] !== F[start][4]) {
+        const [lab, c] = G[F[start][4]];
+        el('rect', { x: X(start) - 66, y: 224, width: X(i - 1) - X(start) + 132, height: 20, rx: 10, fill: c, opacity: .14 }, svg);
+        txt({ x: (X(start) + X(i - 1)) / 2, y: 238.5, 'text-anchor': 'middle', fill: c, 'font-size': 13 }, lab);
+        start = i;
+      }
+    }
+    F.forEach((f, i) => [f[0], f[1]].forEach((s, k) => txt({ x: X(i), y: 264 + k * 18, 'text-anchor': 'middle', fill: '#3a3a3c', 'font-size': 14 }, s)));
+    const line = (idx, stroke, w) => el('path', { d: F.map((f, i) => `${i ? 'L' : 'M'}${X(i)} ${Y(f[idx])}`).join(' '), class: 'cv-line', stroke, 'stroke-width': w }, svg);
+    const lines = [line(3, '#b0b0b8', 3), line(2, 'url(#cvg)', 5)];
+    F.forEach((f, i) => {
+      [[3, '#9a9aa2'], [2, '#5e5ce6']].forEach(([idx, c]) => {
+        const g = el('g', { class: 'cv-dot' }, svg); g.style.transitionDelay = `${.3 + i * .15}s`;
+        el('circle', { cx: X(i), cy: Y(f[idx]), r: idx === 2 ? 7 : 5.5, fill: '#fff', stroke: c, 'stroke-width': 3 }, g);
+        const above = idx === 2 ? f[2] >= f[3] : f[3] > f[2];
+        txt({ x: X(i) + 13, y: Y(f[idx]) + (above ? -8 : 18), fill: c, 'font-size': 14 }, String(f[idx]), g);
+      });
+    });
+    [['A2X 플랫폼', 'url(#cvg)', 5], ['최신 AI Gateway 제품군', '#b0b0b8', 3]].forEach(([lab, c, w], k) => {
+      el('line', { x1: 90 + k * 150, x2: 120 + k * 150, y1: 18, y2: 18, stroke: c, 'stroke-width': w, 'stroke-linecap': 'round' }, svg);
+      txt({ x: 128 + k * 150, y: 23, fill: '#3a3a3c', 'font-size': 14 }, lab);
+    });
+    const reset = () => {
+      svg.classList.remove('cv-on');
+      lines.forEach((p) => { const L = p.getTotalLength(); p.style.transition = 'none'; p.style.strokeDasharray = L; p.style.strokeDashoffset = L; });
+    };
+    reset();
+    hooks.canvas = {
+      start() {
+        reset(); void svg.getBoundingClientRect();
+        lines.forEach((p, k) => { p.style.transition = `stroke-dashoffset 1.8s cubic-bezier(.25,.1,.25,1) ${k * .3}s`; p.style.strokeDashoffset = 0; });
+        svg.classList.add('cv-on');
+      },
+      stop() { reset(); }
+    };
+  })();
 
   /* ---------- Scene: what survives (layered stack) ---------- */
   (() => {
@@ -1058,23 +1930,39 @@
     const slots = [];
     for (let r = 0; r < 3; r++) for (let c = 0; c < 12; c++) {
       const x = 270 + c * 76 + (r % 2 ? 38 : 0), y = 58 + r * 44; if (x > 1170) continue;
+      if (r === 1 && (c === 5 || c === 6)) continue; // reserved for the SwingKid chip
       const g = el('g', { class: 'agentchip' }, gApp);
       el('rect', { x: x - 17, y: y - 12, width: 34, height: 24, rx: 8, fill: '#fff', stroke: '#d2d2d7' }, g);
       const c1 = el('circle', { cx: x - 6, cy: y, r: 3, fill: pick(ACC) }, g), c2 = el('circle', { cx: x + 6, cy: y, r: 3, fill: c1.getAttribute('fill') }, g);
       slots.push({ g, eyes: [c1, c2] });
     }
+    // one named agent among the crowd (clickable)
+    {
+      const g = el('g', { class: 'agentchip' }, gApp);
+      const sk = el('a', { href: 'https://swingkid.madkeroro.workers.dev/', target: '_blank', rel: 'noopener', class: 'skchip' }, g);
+      el('title', {}, sk).textContent = '기완이가 만든 Agent — 새 창에서 열기';
+      el('rect', { x: 655, y: 90, width: 142, height: 24, rx: 8, fill: '#fff', stroke: '#d2d2d7' }, sk);
+      const c1 = el('circle', { cx: 668, cy: 102, r: 3, fill: pick(ACC) }, sk), c2 = el('circle', { cx: 678, cy: 102, r: 3, fill: c1.getAttribute('fill') }, sk);
+      const skt = el('text', { x: 736, y: 106.5, 'text-anchor': 'middle', 'font-family': 'Jua, sans-serif', 'font-size': 12.5, fill: '#6e6e73' }, sk);
+      skt.textContent = '기완이가 만든 Agent';
+      slots.push({ g, eyes: [c1, c2] });
+    }
 
     // right: value meters
     const meters = [];
-    const meter = (cy, title, sub, color, fill, from, to) => {
+    const meter = (cy, title, sub, color, fill, from, to, stat) => {
       T(1250, cy - 14, title, { 'font-size': 23, fill: color });
       el('rect', { x: 1250, y: cy - 2, width: 180, height: 10, rx: 5, fill: '#e5e5ea' }, svg);
       const f = el('rect', { x: 1250, y: cy - 2, width: 180, height: 10, rx: 5, fill, class: 'meter' }, svg);
       T(1250, cy + 30, sub, { 'font-size': 14.5, fill: '#86868b', 'font-family': 'Jua' });
+      if (stat) {
+        T(1250, cy + 60, stat[0], { 'font-size': 21, fill: stat[2] });
+        T(1250, cy + 79, stat[1], { 'font-size': 12.5, fill: '#6e6e73', 'font-family': 'Jua' });
+      }
       meters.push({ f, from, to }); f.style.transform = `scaleX(${from})`;
     };
-    meter(100, '범용화 ↓', '진입장벽이 사라짐', '#8e8e93', '#aeaeb2', .8, .18);
-    meter(272, '가치 집중 ↑', '모든 호출의 통제 지점', '#5e5ce6', 'url(#mw)', .12, .95);
+    meter(100, '범용화 ↓', '진입장벽이 사라짐', '#8e8e93', '#aeaeb2', .8, .18, ['2,340억 달러¹', '앱 지출이 Agent에 잠식될 위험', '#6e6e73']);
+    meter(272, '가치 집중 ↑', '모든 호출의 통제 지점', '#5e5ce6', 'url(#mw)', .12, .95, ['연결된 앱 29%²', '기업당 앱 평균 897개 중', '#5e5ce6']);
     meter(438, '규모의 경제 ↑', '자본 집약 · 소수 사업자', '#2f6bff', '#2f6bff', .25, .85);
     T(1430, 516, '* 개념도', { 'text-anchor': 'end', 'font-family': 'Jua', 'font-size': 13, fill: '#aeaeb2' });
 
@@ -1106,48 +1994,56 @@
     };
   })();
 
-  /* ---------- Scene: sprawl vs hub ---------- */
+  /* ---------- Scene: sprawl vs hub (colored by connection method) ---------- */
   (() => {
     const L = $('#sprawlL'), R = $('#sprawlR'); glowDefs(L); glowDefs(R);
-    const A = ['Agent A', 'Agent B', 'Agent C', 'Agent D', 'Agent E', 'Agent F'], S = ['ERP', '인사', '주문', '재고', 'CRM', '결제'];
-    const ys = A.map((_, i) => 40 + i * 64);
+    const PC = { API: '#2f6bff', MCP: '#f29900', A2A: '#1e8e3e' };
+    const A = [['Agent A', 'API'], ['Agent B', 'API'], ['Agent C', 'MCP'], ['Agent D', 'MCP'], ['Agent E', 'MCP'], ['Agent F', 'A2A']];
+    const S = ['ERP', '인사', '주문', '재고', 'CRM', '파트너 Agent'];
+    const ys = A.map((_, i) => 28 + i * 48);
     function chips(svg) {
       const g = el('g', {}, svg);
       ys.forEach((y, i) => {
-        el('rect', { x: 14, y: y - 17, width: 104, height: 34, rx: 10, fill: '#fff', stroke: '#d2d2d7' }, g);
-        el('text', { x: 66, y: y + 5, 'text-anchor': 'middle', 'font-family': 'Jua', 'font-size': 15, fill: '#1d1d1f' }, g).textContent = A[i];
-        el('rect', { x: 562, y: y - 17, width: 104, height: 34, rx: 10, fill: '#fff', stroke: '#d2d2d7' }, g);
-        el('text', { x: 614, y: y + 5, 'text-anchor': 'middle', 'font-family': 'Jua', 'font-size': 15, fill: '#1d1d1f' }, g).textContent = S[i];
+        el('rect', { x: 14, y: y - 16, width: 108, height: 32, rx: 10, fill: '#fff', stroke: '#d2d2d7' }, g);
+        el('circle', { cx: 30, cy: y, r: 4.5, fill: PC[A[i][1]] }, g);
+        el('text', { x: 74, y: y + 5, 'text-anchor': 'middle', 'font-family': 'Jua', 'font-size': 15, fill: '#1d1d1f' }, g).textContent = A[i][0];
+        el('rect', { x: 552, y: y - 16, width: 114, height: 32, rx: 10, fill: '#fff', stroke: '#d2d2d7' }, g);
+        el('text', { x: 609, y: y + 5, 'text-anchor': 'middle', 'font-family': 'Jua', 'font-size': 15, fill: '#1d1d1f' }, g).textContent = S[i];
       });
       return g;
     }
-    // left: spaghetti
+    // left: every agent wires its own way into every system
     const lg = el('g', {}, L), lpaths = [];
-    for (let k = 0; k < 26; k++) {
-      const i = Math.floor(Math.random() * 6), j = Math.floor(Math.random() * 6);
-      lpaths.push(el('path', { d: `M118,${ys[i]} C${rand(220, 320)},${ys[i] + rand(-120, 120)} ${rand(360, 460)},${ys[j] + rand(-120, 120)} 562,${ys[j]}`, fill: 'none', stroke: pick(['#ff3b30', '#ff9500', '#c7c7cc']), 'stroke-width': 1.4, opacity: .55, class: 'jit', style: `animation-duration:${rand(.6, 1.6)}s` }, lg));
+    for (let k = 0; k < 24; k++) {
+      const i = Math.floor(Math.random() * 6), j = A[i][1] === 'A2A' ? 5 : Math.floor(Math.random() * 5);
+      const c = PC[A[i][1]];
+      const path = el('path', { d: `M122,${ys[i]} C${rand(220, 320)},${ys[i] + rand(-90, 90)} ${rand(360, 460)},${ys[j] + rand(-90, 90)} 552,${ys[j]}`, fill: 'none', stroke: c, 'stroke-width': 1.4, opacity: .45, class: 'jit', style: `animation-duration:${rand(.6, 1.6)}s` }, lg);
+      path.dataset.c = c; lpaths.push(path);
     }
     chips(L);
-    [[300, 120], [380, 260], [250, 330]].forEach(([x, y]) => el('text', { x, y, 'font-family': 'Do Hyeon', 'font-size': 30, fill: '#ff3b30', opacity: .7 }, L).textContent = '?');
-    // right: hub
+    [[300, 92], [380, 200], [250, 250]].forEach(([x, y]) => el('text', { x, y, 'font-family': 'Do Hyeon', 'font-size': 28, fill: '#ff3b30', opacity: .7 }, L).textContent = '?');
+    // right: one gateway for all three methods
     const rg = el('g', {}, R), ins = [], outs = [];
-    ys.forEach((y) => {
-      ins.push(el('path', { d: `M118,${y} C230,${y} 240,200 288,200`, fill: 'none', stroke: '#b9c9ec', 'stroke-width': 1.6 }, rg));
-      outs.push(el('path', { d: `M392,200 C440,200 450,${y} 562,${y}`, fill: 'none', stroke: '#b9c9ec', 'stroke-width': 1.6 }, rg));
+    ys.forEach((y, i) => {
+      ins.push(el('path', { d: `M122,${y} C230,${y} 240,150 288,150`, fill: 'none', stroke: PC[A[i][1]], 'stroke-width': 1.8, opacity: .45 }, rg));
+      outs.push(el('path', { d: `M392,150 C440,150 450,${y} 552,${y}`, fill: 'none', stroke: '#b9c9ec', 'stroke-width': 1.6 }, rg));
     });
     chips(R);
     const defs = el('defs', {}, R), hg = el('linearGradient', { id: 'hubg', x1: 0, y1: 0, x2: 1, y2: 1 }, defs);
     [['0', '#2f6bff'], ['.6', '#7d5cf5'], ['1', '#bf5af2']].forEach(([o, c]) => el('stop', { offset: o, 'stop-color': c }, hg));
-    el('circle', { cx: 340, cy: 200, r: 64, fill: '#7d5cf5', opacity: .18, class: 'mwglow' }, R);
-    el('circle', { cx: 340, cy: 200, r: 52, fill: 'url(#hubg)' }, R);
-    el('text', { x: 340, y: 198, 'text-anchor': 'middle', 'font-family': 'Do Hyeon', 'font-size': 28, fill: '#fff' }, R).textContent = 'A2X';
-    el('text', { x: 340, y: 220, 'text-anchor': 'middle', 'font-family': 'Jua', 'font-size': 12, fill: '#fff', opacity: .9 }, R).textContent = '권한 · 감사';
+    el('circle', { cx: 340, cy: 150, r: 62, fill: '#7d5cf5', opacity: .18, class: 'mwglow' }, R);
+    el('circle', { cx: 340, cy: 150, r: 50, fill: 'url(#hubg)' }, R);
+    el('text', { x: 340, y: 148, 'text-anchor': 'middle', 'font-family': 'Do Hyeon', 'font-size': 27, fill: '#fff' }, R).textContent = 'A2X';
+    el('text', { x: 340, y: 169, 'text-anchor': 'middle', 'font-family': 'Jua', 'font-size': 11.5, fill: '#fff', opacity: .9 }, R).textContent = '권한 · 감사';
     let timers = [], on = false;
     hooks.sprawl = {
       start() {
         on = true; const alive = () => on;
-        timers.push(setInterval(() => { const i = Math.floor(Math.random() * 6); travel(ins[i], 800, pick(ACC), { r: 4, alive }).then((ok) => ok && travel(pick(outs), 800, '#2f6bff', { r: 4, alive })); }, 260));
-        timers.push(setInterval(() => travel(pick(lpaths), rand(700, 1300), '#ff3b30', { r: 3, alive, glow: false }), 220));
+        timers.push(setInterval(() => {
+          const i = Math.floor(Math.random() * 6), out = A[i][1] === 'A2A' ? outs[5] : outs[Math.floor(Math.random() * 5)];
+          travel(ins[i], 800, PC[A[i][1]], { r: 4, alive }).then((ok) => ok && travel(out, 800, PC[A[i][1]], { r: 4, alive }));
+        }, 280));
+        timers.push(setInterval(() => { const pth = pick(lpaths); travel(pth, rand(700, 1300), pth.dataset.c, { r: 3, alive, glow: false }); }, 220));
       },
       stop() { on = false; timers.forEach(clearInterval); timers = []; }
     };
@@ -1655,20 +2551,6 @@
     hooks.edge = {
       start() { on = true; chips.forEach((c, k) => c.classList.toggle('on', k === fi)); perm(0); gov(0); agent(); audit(); later(flip, 1200); },
       stop() { on = false; tk++; timers.forEach(clearTimeout); timers = []; }
-    };
-  })();
-
-  /* ---------- Scene: problem → solution ---------- */
-  (() => {
-    const ps = $('#ps'), rows = [...ps.querySelectorAll('.psr')];
-    let timers = [];
-    const later = (fn, ms) => timers.push(setTimeout(fn, ms));
-    hooks.ps = {
-      start() {
-        rows.forEach((r, i) => later(() => { r.classList.add('go'); later(() => { r.classList.add('ok'); r.querySelector('.pp i').textContent = '✓'; }, 1100); }, 250 + i * 600));
-        later(() => ps.classList.add('done'), 250 + rows.length * 600 + 700);
-      },
-      stop() { timers.forEach(clearTimeout); timers = []; rows.forEach((r, i) => { r.classList.remove('go', 'ok'); r.querySelector('.pp i').textContent = String(i + 1); }); ps.classList.remove('done'); }
     };
   })();
 
